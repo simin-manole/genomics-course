@@ -13,3 +13,8 @@ knitr::opts_chunk$set(echo = TRUE)
 # Lab Files
 
 ## [Lab 1](lab1_SM.html)
+
+
+Application written in R [@RCoreTeam] using the Shiny framework [@Chang2015].
+
+# REFERENCES

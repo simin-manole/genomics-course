@@ -1,0 +1,15 @@
+---
+title: "Evolutionary Genomics & Bioinformatics"
+author: "Simin Manole"
+date: "8/31/2020"
+output: html_document
+bibliography: data/references.bib
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Lab Files
+
+## [Lab 1](lab1_SM.html)

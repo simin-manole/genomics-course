@@ -1,0 +1,117 @@
+---
+title: "Lab3A"
+author: "Simin Manole"
+date: "September 7, 2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r, eval=FALSE}
+download.file(url="https://ndownloader.figshare.com/files/2292169",
+              destfile = "data/portal_data_joined.csv")
+```
+
+```{r}
+surveys <- read.csv("data/portal_data_joined.csv")
+```
+
+## What is the class of the object surveys?
+```{r}
+str(surveys)
+##class = 'data.frame'
+```
+## How many rows and how many columns are in this object?
+```{r}
+ncol(surveys)
+nrow(surveys)
+##number of columns = 13
+##number of rows = 34786
+```
+## How many species have been recorded during these surveys?
+```{r}
+length(summary(surveys[ , "species_id"]))
+##number of species = 48
+```
+
+## Create a data.frame containing containing only the data in row 200 of the surveys dataset.
+```{r}
+surveys_200 <- surveys[200, ]
+```
+
+## Create a new data frame (surveys_last) from that last row.
+```{r}
+nrow(surveys)
+tail(surveys)
+n_rows <- nrow(surveys)
+surveys_last <- surveys[n_rows,]
+```
+
+## Use nrow() to extract the row that is in the middle of the data frame. Store the content of this row in an object named surveys_middle.
+```{r}
+surveys_middle <- surveys[n_rows /2 ,]
+```
+
+## Combine nrow() with the - notation above to reproduce the behavior of head(surveys), keeping just the first through 6th rows of the surveys dataset.
+```{r}
+surveys_head <- surveys[-(7:n_rows),]
+```
+
+## Rename “F” and “M” to “female” and “male” respectively.
+```{r}
+sex <- factor(surveys$sex)
+levels(sex)[1] <- "undetermined"
+levels(sex)[2] <- "female"
+levels(sex)[3] <- "male"
+levels(sex)
+```
+
+## Can you recreate the barplot such that “undetermined” is last (after “male”)?
+```{r}
+sex <- factor(sex, levels = c("female", "male", "undetermined"))
+plot(sex)
+```
+
+## There are a few mistakes in this hand-crafted data.frame. Can you spot and fix them? Don’t hesitate to experiment!
+```{r, eval=FALSE}
+animal_data <- data.frame(
+          animal = c(dog, cat, sea cucumber, sea urchin),
+          feel = c("furry", "squishy", "spiny"),
+          weight = c(45, 8 1.1, 0.8)
+          )
+```
+
+```{r}
+animal_data <- data.frame(
+          animal = c("dog", "cat", "sea cucumber", "sea urchin"),
+          feel = c("furry", "furry", "squishy", "spiny"),
+          weight = c(45, 8, 1.1, 0.8)
+          )
+```
+
+## Can you predict the class for each of the columns in the following example?
+```{r}
+country_climate <- data.frame(
+       country = c("Canada", "Panama", "South Africa", "Australia"),
+       climate = c("cold", "hot", "temperate", "hot/temperate"),
+       temperature = c(10, 30, 18, "15"),
+       northern_hemisphere = c(TRUE, TRUE, FALSE, "FALSE"),
+       has_kangaroo = c(FALSE, FALSE, FALSE, 1)
+       )
+str(country_climate)
+```
+
+```{r}
+country_climate <- data.frame(
+  country = c("Canada", "Panama", "South Africa", "Australia"),
+  climate = c("cold", "hot", "temperate", "hot/temperate"),
+  temperature = c(10, 30, 18, 15),
+  northern_hemisphere = c(TRUE, TRUE, FALSE, FALSE),
+  has_kangaroo = c(FALSE, FALSE, FALSE, TRUE),
+  stringsAsFactors = FALSE
+  )
+str(country_climate)
+```

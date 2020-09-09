@@ -14,7 +14,9 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## [Lab 1](labs/lab1_SM.html)
 
-## [Lab 3a](Lab3A.html)
+## [Lab 3a](labs/Lab3A.html)
+
+## [Lab 3b](labs/Lab3B.html)
 
 Application written in R [@RCoreTeam] using the Shiny framework [@Chang2015].
 

@@ -494,9 +494,60 @@ surveys_ysw</code></pre>
 </div>
 <div id="spread-the-surveys-data-frame-with-year-as-columns-plot_id-as-rows-and-the-number-of-genera-per-plot-as-the-values." class="section level2">
 <h2>Spread the surveys data frame with year as columns, plot_id as rows, and the number of genera per plot as the values.</h2>
+<pre class="r"><code>surveys_spread_genera &lt;- surveys %&gt;%
+  group_by(plot_id, year) %&gt;%
+  summarize(genera = n_distinct(genus)) %&gt;%
+  #Year is key
+  #number of genera is value
+  spread(key = year, value = genera)</code></pre>
+<pre><code>## `summarise()` regrouping output by &#39;plot_id&#39; (override with `.groups` argument)</code></pre>
+<pre class="r"><code>  head(surveys_spread_genera)</code></pre>
+<pre><code>## # A tibble: 6 x 27
+## # Groups:   plot_id [6]
+##   plot_id `1977` `1978` `1979` `1980` `1981` `1982` `1983` `1984` `1985`
+##     &lt;dbl&gt;  &lt;int&gt;  &lt;int&gt;  &lt;int&gt;  &lt;int&gt;  &lt;int&gt;  &lt;int&gt;  &lt;int&gt;  &lt;int&gt;  &lt;int&gt;
+## 1       1      2      3      4      7      5      6      7      6      4
+## 2       2      6      6      6      8      5      9      9      9      6
+## 3       3      5      6      4      6      6      8     10     11      7
+## 4       4      4      4      3      4      5      4      6      3      4
+## 5       5      4      3      2      5      4      6      7      7      3
+## 6       6      3      4      3      4      5      9      9      7      5
+## # ... with 17 more variables: `1986` &lt;int&gt;, `1987` &lt;int&gt;, `1988` &lt;int&gt;,
+## #   `1989` &lt;int&gt;, `1990` &lt;int&gt;, `1991` &lt;int&gt;, `1992` &lt;int&gt;, `1993` &lt;int&gt;,
+## #   `1994` &lt;int&gt;, `1995` &lt;int&gt;, `1996` &lt;int&gt;, `1997` &lt;int&gt;, `1998` &lt;int&gt;,
+## #   `1999` &lt;int&gt;, `2000` &lt;int&gt;, `2001` &lt;int&gt;, `2002` &lt;int&gt;</code></pre>
 </div>
-<div id="you-will-need-to-summarize-before-reshaping-and-use-the-function-n_distinct-to-get-the-number-of-unique-genera-within-a-particular-chunk-of-data.-its-a-powerful-function-see-n_distinct-for-more." class="section level1">
-<h1>You will need to summarize before reshaping, and use the function n_distinct() to get the number of unique genera within a particular chunk of data. It’s a powerful function! See ?n_distinct for more.</h1>
+<div id="now-take-that-data-frame-and-gather-it-again-so-each-row-is-a-unique-plot_id-by-year-combination." class="section level2">
+<h2>Now take that data frame and gather() it again, so each row is a unique plot_id by year combination.</h2>
+<pre class="r"><code>surveys_spread_genera %&gt;%
+  #year is key
+  #number of genera is value
+  gather(year, genera, -plot_id)</code></pre>
+<pre><code>## # A tibble: 624 x 3
+## # Groups:   plot_id [24]
+##    plot_id year  genera
+##      &lt;dbl&gt; &lt;chr&gt;  &lt;int&gt;
+##  1       1 1977       2
+##  2       2 1977       6
+##  3       3 1977       5
+##  4       4 1977       4
+##  5       5 1977       4
+##  6       6 1977       3
+##  7       7 1977       3
+##  8       8 1977       2
+##  9       9 1977       3
+## 10      10 1977       1
+## # ... with 614 more rows</code></pre>
+</div>
+<div id="use-gather-to-create-a-dataset-where-we-have-a-key-column-called-measurement-and-a-value-column-that-takes-on-the-value-of-either-hindfoot_length-or-weight." class="section level2">
+<h2>Use gather() to create a dataset where we have a key column called measurement and a value column that takes on the value of either hindfoot_length or weight.</h2>
+<p>First, use gather() to create a dataset where we have a key column called measurement and a value column that takes on the value of either hindfoot_length or weight.</p>
+<pre class="r"><code>surveys_measurements &lt;- surveys %&gt;%
+  gather(hindfoot_length, weight, key = measurement, value = value)</code></pre>
+</div>
+<div id="with-this-new-data-set-calculate-the-average-of-each-measurement-in-each-year-for-each-different-plot_type.-then-spread-them-into-a-data-set-with-a-column-for-hindfoot_length-and-weight." class="section level2">
+<h2>With this new data set, calculate the average of each measurement in each year for each different plot_type. Then spread() them into a data set with a column for hindfoot_length and weight.</h2>
+<p>Hint: You only need to specify the key and value columns for spread().</p>
 </div>
 
 

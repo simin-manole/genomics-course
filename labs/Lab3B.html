@@ -548,6 +548,24 @@ surveys_ysw</code></pre>
 <div id="with-this-new-data-set-calculate-the-average-of-each-measurement-in-each-year-for-each-different-plot_type.-then-spread-them-into-a-data-set-with-a-column-for-hindfoot_length-and-weight." class="section level2">
 <h2>With this new data set, calculate the average of each measurement in each year for each different plot_type. Then spread() them into a data set with a column for hindfoot_length and weight.</h2>
 <p>Hint: You only need to specify the key and value columns for spread().</p>
+<pre class="r"><code>surveys_measurements_mean &lt;- surveys_measurements %&gt;%
+  filter(!is.na(value)) %&gt;%
+  select(year, plot_type, measurement, value) %&gt;%
+  group_by(plot_type, year, measurement) %&gt;%
+  summarize(mean = mean(value)) %&gt;%
+  spread(key = measurement, value = mean)</code></pre>
+<pre><code>## `summarise()` regrouping output by &#39;plot_type&#39;, &#39;year&#39; (override with `.groups` argument)</code></pre>
+<pre class="r"><code>  head(surveys_measurements_mean)</code></pre>
+<pre><code>## # A tibble: 6 x 4
+## # Groups:   plot_type, year [6]
+##   plot_type  year hindfoot_length weight
+##   &lt;chr&gt;     &lt;dbl&gt;           &lt;dbl&gt;  &lt;dbl&gt;
+## 1 Control    1977            36.1   50.4
+## 2 Control    1978            38.1   70.8
+## 3 Control    1979            36.6   68.1
+## 4 Control    1980            36.5   66.2
+## 5 Control    1981            37.0   68.0
+## 6 Control    1982            34.2   58.8</code></pre>
 </div>
 
 

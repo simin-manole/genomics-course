@@ -1,0 +1,15 @@
+---
+title: "lab2"
+author: "Simin Manole"
+date: "September 14, 2020"
+output: html_document
+bibliography: data/references.bib
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Application written in R [@RCoreTeam] using the Shiny framework [@Chang2015].
+
+# REFERENCES

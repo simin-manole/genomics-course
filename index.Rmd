@@ -3,7 +3,6 @@ title: "Evolutionary Genomics & Bioinformatics"
 author: "Simin Manole"
 date: "8/31/2020"
 output: html_document
-bibliography: data/references.bib
 ---
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -14,10 +13,8 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## [Lab 1](labs/lab1_SM.html)
 
+## [Lab 2](labs/lab2.html)
+
 ## [Lab 3a](labs/Lab3A.html)
 
 ## [Lab 3b](labs/Lab3B.html)
-
-Application written in R [@RCoreTeam] using the Shiny framework [@Chang2015].
-
-# REFERENCES

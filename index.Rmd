@@ -18,3 +18,5 @@ knitr::opts_chunk$set(echo = TRUE)
 ## [Lab 3a](labs/Lab3A.html)
 
 ## [Lab 3b](labs/Lab3B.html)
+
+## [Lab 4 - ggplot](labs/lab4_ggplot2.html)

@@ -1,0 +1,93 @@
+---
+title: "Lab4 ggplot2 Exercises"
+author: "Simin Manole"
+date: "September 14, 2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library("tidyverse")
+library("DT")
+library("hexbin")
+surveys_complete <- read_csv("data/portal_data_joined.csv")
+```
+
+## Example Plot
+```{r}
+# Assign plot to a variable
+surveys_plot <- ggplot(data = surveys_complete, 
+                       mapping = aes(x = weight, y = hindfoot_length))
+
+# Draw the plot
+surveys_plot + 
+    geom_point()
+```
+
+## Use the geom_hex() function
+```{r}
+surveys_plot +
+ geom_hex()
+```
+```{r}
+#geom_hex adds a new dimension so I can see areas of high overlap, but I lose resolution in my x & y points, so say the grouping above hindfoot_length 40 is less compact and now attaches to other groups.
+```
+
+## Use what you just learned to create a scatter plot of weight over species_id with the plot types showing in different colors
+```{r}
+#Added to remove NA data from plots
+surveys_ggplot <- surveys_complete %>%
+  filter(!is.na(weight))
+
+ggplot(data = surveys_ggplot, 
+        mapping = aes(x = species_id, y = weight)) +
+  geom_point(aes(color = plot_type))
+```
+Is this a good way to show this type of data?
+```{r}
+#What a mess! You're better off doing average weight per plot type to clean up this mix of colored dots, and still I'd say a bar chart makes more sense.
+```
+
+## Replace the box plot with a violin plot
+```{r}
+ggplot(data = surveys_ggplot, mapping = aes(x = species_id, y = weight)) +
+    geom_violin(alpha = 0)
+```
+
+## Represent weight in log10 scale
+```{r}
+ggplot(data = surveys_ggplot, mapping = aes(x = species_id, y = weight)) +
+  geom_violin(alpha = 0) +
+  scale_y_log10()
+```
+
+## Create a boxplot for hindfoot_length. Overlay the boxplot layer on a jitter layer to show actual measurements.
+```{r}
+surveys_ggplot_2 <- surveys_complete %>%
+  filter(!is.na(hindfoot_length))
+
+ggplot(data = surveys_ggplot_2, mapping = aes(x = species_id, y = hindfoot_length)) +
+  geom_jitter(alpha = 0.3, color = "tomato") +
+   geom_boxplot(alpha = 0)
+```
+
+## Add color to the data points on your boxplot according to the plot from which the sample was taken (plot_id).
+```{r}
+ggplot(data = surveys_ggplot_2, mapping = aes(x = species_id, y = hindfoot_length)) +
+  geom_jitter(alpha = 0.3, aes(color = plot_id)) +
+   geom_boxplot(alpha = 0)
+```
+
+## But if plot_id was a factor?
+```{r}
+#set as factor 
+surveys_ggplot_2 <- mutate_at(surveys_ggplot_2, vars(plot_id), as.factor)
+#plot
+ggplot(data = surveys_ggplot_2, mapping = aes(x = species_id, y = hindfoot_length)) +
+  geom_jitter(alpha = 0.3, aes(color = plot_id)) +
+   geom_boxplot(alpha = 0)
+```
+
+
+
+

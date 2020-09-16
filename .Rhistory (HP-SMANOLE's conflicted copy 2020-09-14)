@@ -1,0 +1,512 @@
+filter(!is.na(weight)) %>%
+group_by(year)
+surveys %>%
+filter(!is.na(weight)) %>%
+group_by(year)
+surveys %>%
+filter(!is.na(weight)) %>%
+select(year, genus, species_id, weight) %>%
+group_by(year)
+surveys %>%
+filter(!is.na(weight)) %>%
+summarize(max_weight = max(weight)) %>%
+select(year, genus, species_id, max_weight)
+surveys %>%
+filter(!is.na(weight)) %>%
+summarize(max_weight = max(weight)) %>%
+select(year, genus, species_id, max_weight)
+surveys %>%
+filter(!is.na(weight)) %>%
+summarize(max_weight = max(weight)) %>%
+select(genus, species_id, max_weight)
+surveys_hindfoot <- surveys %>%
+mutate(hindfoot_cm = hindfoot_length / 10) %>%
+filter(!is.na(hindfoot_cm)) %>%
+filter(hindfoot_cm < 3) %>%
+select(species_id, hindfoot_cm)
+surveys %>%
+count(plot_type)
+surveys <- read_csv("data/portal_data_joined.csv")
+surveys_ysw <- surveys %>%
+filter(year < 1995) %>%
+select(year, sex, weight)
+surveys_ysw
+surveys %>%
+group_by(species_id) %>%
+filter(!is.na(hindfoot_length)) %>%
+summarize(mean_hindfoot = mean(hindfoot_length),
+min_hindfoot = min(hindfoot_length),
+max_hindfoot = max(hindfoot_length),
+n = n()
+)
+surveys %>%
+group_by(year) %>%
+filter(!is.na(weight)) %>%
+summarize(max_weight = max(weight)) %>%
+select(year, genus, species_id, max_weight)
+surveys %>%
+group_by(year) %>%
+filter(!is.na(weight)) %>%
+summarize(max_weight = max(weight))
+surveys %>%
+group_by(year) %>%
+filter(!is.na(weight)) %>%
+summarize(year = year,
+genus = genus,
+species_id = species_id,
+max_weight = max(weight),
+)
+surveys %>%
+group_by(year) %>%
+filter(!is.na(weight)) %>%
+summarize(year = year,
+genus = genus,
+species_id = species_id,
+max_weight == max(weight),
+)
+surveys %>%
+group_by(year) %>%
+filter(!is.na(weight)) %>%
+filter(weight == max(weight)
+surveys %>%
+group_by(year) %>%
+filter(!is.na(weight)) %>%
+filter(weight == max(weight))
+surveys %>%
+group_by(year) %>%
+filter(!is.na(weight)) %>%
+filter(weight == max(weight))
+select(year, genus, species, weight) %>%
+arrange(year)
+surveys %>%
+group_by(year) %>%
+filter(!is.na(weight)) %>%
+filter(weight == max(weight))
+select(year, genus, species, weight) %>%
+arrange(year)
+surveys %>%
+group_by(year) %>%
+filter(!is.na(weight)) %>%
+filter(weight == max(weight))
+select(year, genus, species, weight) %>%
+arrange(year)
+select(year, genus, species, weight) %>%
+arrange(year)
+select(year, genus, species, weight)
+surveys %>%
+group_by(year) %>%
+filter(!is.na(weight)) %>%
+filter(weight == max(weight))
+select(year, genus, species, weight)
+surveys %>%
+group_by(year) %>%
+filter(!is.na(weight)) %>%
+filter(weight == max(weight))
+select(year, genus, species, weight)
+surveys %>%
+group_by(year) %>%
+filter(!is.na(weight)) %>%
+filter(weight == max(weight)) %>%
+select(year, genus, species, weight %>%
+arrange(year)
+surveys %>%
+group_by(year) %>%
+filter(!is.na(weight)) %>%
+filter(weight == max(weight)) %>%
+select(year, genus, species, weight) %>%
+arrange(year)
+surveys
+surveys %>%
+summarize(n_genera = n(genus))
+?n()
+surveys %>%
+select(year, plot_id, genus)
+surveys %>%
+#select(year, plot_id, genus)
+count(plot_id)
+surveys %>%
+#select(year, plot_id, genus)
+count(plot_id, genus)
+surveys %>%
+#select(year, plot_id, genus)
+count(plot_id, genus)
+knitr::opts_chunk$set(echo = TRUE)
+library("tidyverse")
+surveys %>%
+?n_distinct()
+surveys %>%
+n_distinct()
+surveys %>%
+?n_distinct
+surveys %>%
+n_distinct(surveys)
+n_distinct(surveys)
+View(surveys_hindfoot)
+surveys %>%
+n_distinct(surveys)
+surveys %>%
+select(year, genus, plot_id) %>%
+n_distinct()
+urveys %>%
+select(year, genus, plot_id) %>%
+surveys %>%
+select(year, genus, plot_id) %>%
+n_distinct()
+surveys %>%
+select(year, genus, plot_id) %>%
+n_distinct((surveys))
+surveys %>%
+select(year, genus, plot_id) %>%
+n_distinct((surveys))
+surveys %>%
+select(year, genus, plot_id) %>%
+n_distinct()
+surveys %>%
+select(year, genus, plot_id) %>%
+n_distinct(genus)
+surveys %>%
+select(genus) %>%
+n_distinct()
+s <- surveys %>%
+select(genus) %>%
+n_distinct()
+s <- surveys %>%
+select(genus) %>%
+n_distinct()
+surveys %>%
+group_by(year) %>%
+filter(!is.na(weight)) %>%
+filter(weight == max(weight)) %>%
+select(year, genus, species, weight) %>%
+arrange(year)
+surveys %>%
+group_by(plot_id) %>%
+filter(genera ==n_distinct(genus)) %>%
+select(plot_id, genera, year) %>%
+arrange(plot_id) %>%
+surveys %>%
+group_by(plot_id) %>%
+filter(genera ==n_distinct(genus)) %>%
+select(plot_id, genera, year) %>%
+arrange(plot_id)
+surveys %>%
+group_by(plot_id) %>%
+filter(genera == n_distinct(genus)) %>%
+select(plot_id, genera, year) %>%
+arrange(plot_id)
+surveys %>%
+group_by(plot_id) %>%
+select(plot_id, genus, year) %>%
+arrange(plot_id)
+surveys %>%
+group_by(plot_id) %>%
+select(plot_id, genus, year)
+#arrange(plot_id)
+surveys_spread_genera <- surveys %>%
+group_by(plot_id, year)
+View(surveys_spread_genera)
+surveys_spread_genera <- surveys %>%
+group_by(plot_id, year) %>$
+surveys_spread_genera <- surveys %>%
+group_by(plot_id, year) %>%
+summarize(genera = n_distinct(genus))
+surveys_spread_genera <- surveys %>%
+group_by(plot_id, year) %>%
+summarize(genera = n_distinct(genus))
+surveys_spread_genera <- surveys %>%
+group_by(plot_id, year) %>%
+summarize(genera = n_distinct(genus)) %>%
+#plot_id is key
+#number of genera is value
+spread(key = plot_id, value = genera)
+surveys_spread_genera <- surveys %>%
+group_by(plot_id, year) %>%
+summarize(genera = n_distinct(genus)) %>%
+#Year is key
+#number of genera is value
+spread(key = year, value = genera)
+surveys_spread_genera <- surveys %>%
+group_by(plot_id, year) %>%
+summarize(genera = n_distinct(genus)) %>%
+#Year is key
+#number of genera is value
+spread(key = year, value = genera) %>%
+head(surveys_spread_genera)
+surveys_spread_genera <- surveys %>%
+group_by(plot_id, year) %>%
+summarize(genera = n_distinct(genus)) %>%
+#Year is key
+#number of genera is value
+spread(key = year, value = genera) %>%
+head()
+surveys_spread_genera <- surveys %>%
+group_by(plot_id, year) %>%
+summarize(genera = n_distinct(genus)) %>%
+#Year is key
+#number of genera is value
+spread(key = year, value = genera) %>%
+head(surveys_spread_genera)
+surveys_spread_genera <- surveys %>%
+group_by(plot_id, year) %>%
+summarize(genera = n_distinct(genus)) %>%
+#Year is key
+#number of genera is value
+spread(key = year, value = genera)
+head(surveys_spread_genera)
+View(surveys_spread_genera)
+surveys_spread_genera %>%
+#year is key
+#number of genera is value
+gather(year, genera, -plot_id)
+surveys_measurements <- surveys %>%
+gather(hindfoot_length, weight, key = measurement, value = value)
+View(surveys_measurements)
+surveys_long <- surveys %>%
+gather("measurement", "value", hindfoot_length, weight)
+View(surveys_long)
+View(surveys_long)
+knitr::opts_chunk$set(echo = TRUE)
+library("tidyverse")
+surveys <- read_csv("data/portal_data_joined.csv")
+surveys_ysw <- surveys %>%
+filter(year < 1995) %>%
+select(year, sex, weight)
+surveys_ysw
+surveys_hindfoot <- surveys %>%
+mutate(hindfoot_cm = hindfoot_length / 10) %>%
+filter(!is.na(hindfoot_cm)) %>%
+filter(hindfoot_cm < 3) %>%
+select(species_id, hindfoot_cm)
+surveys %>%
+count(plot_type)
+surveys %>%
+group_by(species_id) %>%
+filter(!is.na(hindfoot_length)) %>%
+summarize(mean_hindfoot = mean(hindfoot_length),
+min_hindfoot = min(hindfoot_length),
+max_hindfoot = max(hindfoot_length),
+n = n()
+)
+surveys %>%
+group_by(year) %>%
+filter(!is.na(weight)) %>%
+filter(weight == max(weight)) %>%
+select(year, genus, species, weight) %>%
+arrange(year)
+surveys_spread_genera <- surveys %>%
+group_by(plot_id, year) %>%
+summarize(genera = n_distinct(genus)) %>%
+#Year is key
+#number of genera is value
+spread(key = year, value = genera)
+head(surveys_spread_genera)
+surveys_spread_genera %>%
+#year is key
+#number of genera is value
+gather(year, genera, -plot_id)
+surveys_measurements <- surveys %>%
+gather(hindfoot_length, weight, key = measurement, value = value)
+surveys_test <- surveys_measurements %>%
+filter(!is.na(value)) %>%
+select(year, plot_type, measurement, value) %>%
+group_by(plot_type, year) %>%
+summarize(year, plot_type, measurement, mean = mean(value))
+#summarize(mean_hindfoot_length = mean(hindfoot_length)) %>%
+#summarize(mean_weight = mean(weight))
+surveys_test <- surveys_measurements %>%
+filter(!is.na(value)) %>%
+select(year, plot_type, measurement, value) %>%
+group_by(plot_type, year) %>%
+summarize( , mean = mean(value))
+surveys_test <- surveys_measurements %>%
+filter(!is.na(value)) %>%
+select(year, plot_type, measurement, value) %>%
+group_by(plot_type, year) %>%
+summarize(mean = mean(value))
+#summarize(mean_hindfoot_length = mean(hindfoot_length)) %>%
+#summarize(mean_weight = mean(weight))
+surveys_test <- surveys_measurements %>%
+filter(!is.na(value)) %>%
+select(year, plot_type, measurement, value) %>%
+#group_by(plot_type, year) %>%
+summarize(mean = mean(value))
+#summarize(mean_hindfoot_length = mean(hindfoot_length)) %>%
+#summarize(mean_weight = mean(weight))
+View(surveys_test)
+View(surveys_test)
+surveys_test <- surveys_measurements %>%
+filter(!is.na(value)) %>%
+select(year, plot_type, measurement, value) %>%
+group_by(plot_type, year) %>%
+summarize(mean = mean(value))
+#summarize(mean_hindfoot_length = mean(hindfoot_length)) %>%
+#summarize(mean_weight = mean(weight))
+surveys_test <- surveys_measurements %>%
+filter(!is.na(value)) %>%
+select(year, plot_type, measurement, value) %>%
+group_by(plot_type, year, measurement) %>%
+summarize(mean = mean(value))
+#summarize(mean_hindfoot_length = mean(hindfoot_length)) %>%
+#summarize(mean_weight = mean(weight))
+surveys_test <- surveys_measurements %>%
+filter(!is.na(value)) %>%
+select(year, plot_type, measurement, value) %>%
+group_by(plot_type, year, measurement) %>%
+summarize(mean = mean(value)) %>%
+spread(key = measurement, value = mean)
+surveys_measurements_mean <- surveys_measurements %>%
+filter(!is.na(value)) %>%
+select(year, plot_type, measurement, value) %>%
+group_by(plot_type, year, measurement) %>%
+summarize(mean = mean(value)) %>%
+spread(key = measurement, value = mean)
+head(surveys_measurements_mean)
+View(surveys_measurements_mean)
+knitr::opts_chunk$set(echo = TRUE)
+surveys <- read.csv("data/portal_data_joined.csv")
+surveys <- read.csv("data/portal_data_joined.csv")
+download.file(url="https://ndownloader.figshare.com/files/2292169",
+destfile = "data/portal_data_joined.csv")
+download.file(url="https://ndownloader.figshare.com/files/2292169/combined.csv",
+destfile = "data/portal_data_joined.csv")
+surveys <- read.csv("data/portal_data_joined.csv")
+knitr::opts_chunk$set(echo = TRUE)
+surveys <- read.csv("data/portal_data_joined.csv")
+str(surveys)
+##class = 'data.frame'
+ncol(surveys)
+nrow(surveys)
+##number of columns = 13
+##number of rows = 34786
+length(summary(surveys[ , "species_id"]))
+##number of species = 48
+surveys_200 <- surveys[200, ]
+nrow(surveys)
+tail(surveys)
+n_rows <- nrow(surveys)
+surveys_last <- surveys[n_rows,]
+surveys_middle <- surveys[n_rows /2 ,]
+surveys_head <- surveys[-(7:n_rows),]
+sex <- factor(surveys$sex)
+levels(sex)[1] <- "undetermined"
+levels(sex)[2] <- "female"
+levels(sex)[3] <- "male"
+levels(sex)
+sex <- factor(sex, levels = c("female", "male", "undetermined"))
+plot(sex)
+animal_data <- data.frame(
+animal = c("dog", "cat", "sea cucumber", "sea urchin"),
+feel = c("furry", "furry", "squishy", "spiny"),
+weight = c(45, 8, 1.1, 0.8)
+)
+country_climate <- data.frame(
+country = c("Canada", "Panama", "South Africa", "Australia"),
+climate = c("cold", "hot", "temperate", "hot/temperate"),
+temperature = c(10, 30, 18, "15"),
+northern_hemisphere = c(TRUE, TRUE, FALSE, "FALSE"),
+has_kangaroo = c(FALSE, FALSE, FALSE, 1)
+)
+str(country_climate)
+country_climate <- data.frame(
+country = c("Canada", "Panama", "South Africa", "Australia"),
+climate = c("cold", "hot", "temperate", "hot/temperate"),
+temperature = c(10, 30, 18, 15),
+northern_hemisphere = c(TRUE, TRUE, FALSE, FALSE),
+has_kangaroo = c(FALSE, FALSE, FALSE, TRUE),
+stringsAsFactors = FALSE
+)
+str(country_climate)
+knitr::opts_chunk$set(echo = TRUE)
+library("tidyverse")
+surveys <- read_csv("data/portal_data_joined.csv")
+surveys_ysw <- surveys %>%
+filter(year < 1995) %>%
+select(year, sex, weight)
+surveys_ysw
+surveys_hindfoot <- surveys %>%
+mutate(hindfoot_cm = hindfoot_length / 10) %>%
+filter(!is.na(hindfoot_cm)) %>%
+filter(hindfoot_cm < 3) %>%
+select(species_id, hindfoot_cm)
+surveys %>%
+count(plot_type)
+surveys %>%
+group_by(species_id) %>%
+filter(!is.na(hindfoot_length)) %>%
+summarize(mean_hindfoot = mean(hindfoot_length),
+min_hindfoot = min(hindfoot_length),
+max_hindfoot = max(hindfoot_length),
+n = n()
+)
+surveys %>%
+group_by(year) %>%
+filter(!is.na(weight)) %>%
+filter(weight == max(weight)) %>%
+select(year, genus, species, weight) %>%
+arrange(year)
+surveys_spread_genera <- surveys %>%
+group_by(plot_id, year) %>%
+summarize(genera = n_distinct(genus)) %>%
+#Year is key
+#number of genera is value
+spread(key = year, value = genera)
+head(surveys_spread_genera)
+surveys_spread_genera %>%
+#year is key
+#number of genera is value
+gather(year, genera, -plot_id)
+surveys_measurements <- surveys %>%
+gather(hindfoot_length, weight, key = measurement, value = value)
+surveys_measurements_mean <- surveys_measurements %>%
+filter(!is.na(value)) %>%
+select(year, plot_type, measurement, value) %>%
+group_by(plot_type, year, measurement) %>%
+summarize(mean = mean(value)) %>%
+spread(key = measurement, value = mean)
+head(surveys_measurements_mean)
+knitr::opts_chunk$set(echo = TRUE)
+surveys <- read.csv("data/portal_data_joined.csv")
+str(surveys)
+##class = 'data.frame'
+ncol(surveys)
+nrow(surveys)
+##number of columns = 13
+##number of rows = 34786
+length(summary(surveys[ , "species_id"]))
+##number of species = 48
+surveys_200 <- surveys[200, ]
+nrow(surveys)
+tail(surveys)
+n_rows <- nrow(surveys)
+surveys_last <- surveys[n_rows,]
+surveys_middle <- surveys[n_rows /2 ,]
+surveys_head <- surveys[-(7:n_rows),]
+sex <- factor(surveys$sex)
+levels(sex)[1] <- "undetermined"
+levels(sex)[2] <- "female"
+levels(sex)[3] <- "male"
+levels(sex)
+sex <- factor(sex, levels = c("female", "male", "undetermined"))
+plot(sex)
+animal_data <- data.frame(
+animal = c("dog", "cat", "sea cucumber", "sea urchin"),
+feel = c("furry", "furry", "squishy", "spiny"),
+weight = c(45, 8, 1.1, 0.8)
+)
+country_climate <- data.frame(
+country = c("Canada", "Panama", "South Africa", "Australia"),
+climate = c("cold", "hot", "temperate", "hot/temperate"),
+temperature = c(10, 30, 18, "15"),
+northern_hemisphere = c(TRUE, TRUE, FALSE, "FALSE"),
+has_kangaroo = c(FALSE, FALSE, FALSE, 1)
+)
+str(country_climate)
+country_climate <- data.frame(
+country = c("Canada", "Panama", "South Africa", "Australia"),
+climate = c("cold", "hot", "temperate", "hot/temperate"),
+temperature = c(10, 30, 18, 15),
+northern_hemisphere = c(TRUE, TRUE, FALSE, FALSE),
+has_kangaroo = c(FALSE, FALSE, FALSE, TRUE),
+stringsAsFactors = FALSE
+)
+str(country_climate)

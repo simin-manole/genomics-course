@@ -1,0 +1,82 @@
+---
+title: "Lab 4"
+author: "Simin Manole"
+date: "September 14, 2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library("tidyverse")
+library("DT")
+```
+
+## Import the JHU case tracking data 
+```{r}
+report_03_11_2020 <- read_csv(url("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/03-11-2020.csv")) %>%
+rename(Country_Region = "Country/Region", Province_State = "Province/State")
+```
+
+## Interactive Data Table
+```{r}
+datatable(report_03_11_2020)
+```
+
+## What are the differences between 3/13/2020, the Friday before spring break 2020 and yesterday 6 months later on 9/13/2020? 
+```{r}
+report_09_13_2020 <- read_csv(url("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/09-13-2020.csv"))
+str(report_03_11_2020)
+str(report_09_13_2020)
+```
+
+In the six months between the two reports the data now includes new columns such as FIPS, Admin2, Active, Incidence_Rate, Combined_Key, and 'Case-Fatality_Ratio'.
+
+## Make a data frame (tibble) with total counts for each country.
+```{r}
+report_March_country_total <- report_03_11_2020 %>%
+  group_by(Country_Region) %>%
+  summarise(
+    Total_Confirmed = sum(Confirmed),
+    Total_Deaths = sum(Deaths),
+    Total_Recovered = sum(Recovered)
+  )
+report_Sept_country_total <- report_09_13_2020 %>%
+  group_by(Country_Region) %>%
+  summarise(
+    Total_Confirmed = sum(Confirmed),
+    Total_Deaths = sum(Deaths),
+    Total_Recovered = sum(Recovered)
+  )
+datatable(report_March_country_total)
+datatable(report_Sept_country_total)
+```
+
+## Now just the USA for confirmed cases per each state
+```{r}
+report_March_US_conf <- report_03_11_2020 %>%
+  filter(Country_Region == "US") %>%
+  select(Province_State, Confirmed)
+
+report_Sept_US_conf <- report_09_13_2020 %>%
+  filter(Country_Region == "US") %>%
+  group_by(Province_State) %>%
+  summarize(Total_Confirmed = sum(Confirmed))
+
+datatable(report_March_US_conf)
+datatable(report_Sept_US_conf)
+```
+
+## Let's just use the top 10 countries for Deaths
+```{r}
+report_March_top10 <- report_March_country_total %>%
+  select(Country_Region, Total_Deaths) %>%
+  arrange(desc(Total_Deaths)) %>%
+  slice(1:10)
+report_Sept_top10 <- report_Sept_country_total %>%
+  select(Country_Region, Total_Deaths) %>%
+  arrange(desc(Total_Deaths)) %>%
+  slice(1:10)
+datatable(report_March_top10)
+datatable(report_Sept_top10)
+```
+

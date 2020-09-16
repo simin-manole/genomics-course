@@ -80,3 +80,65 @@ datatable(report_March_top10)
 datatable(report_Sept_top10)
 ```
 
+## Make plots using geom_point() of the (top) 10 countries with the confirmed cases and deaths (two separate graphs) on 3/12/2020 and 9/12/2020.
+```{r}
+#Let's do deaths first since we have that data ready
+March_death_plot <- ggplot(data = report_March_top10, 
+                       mapping = aes(x = Country_Region, y = Total_Deaths))
+March_death_plot + 
+    geom_point() +
+  ggtitle("Total Deaths per Country, March 2020")
+
+Sept_death_plot <- ggplot(data = report_Sept_top10, 
+                       mapping = aes(x = Country_Region, y = Total_Deaths))
+Sept_death_plot + 
+    geom_point() +
+  ggtitle("Total Deaths per Country, September 2020")
+#Don't know how to reorder X-axis labels so Yis in descending order
+
+#Now confirmed cases
+report_March_top10_conf <- report_March_country_total %>%
+  select(Country_Region, Total_Confirmed) %>%
+  arrange(desc(Total_Confirmed)) %>%
+  slice(1:10)
+report_Sept_top10_conf <- report_Sept_country_total %>%
+  select(Country_Region, Total_Confirmed) %>%
+  arrange(desc(Total_Confirmed)) %>%
+  slice(1:10)
+
+#Now graph it
+March_conf_plot <- ggplot(data = report_March_top10_conf, 
+                       mapping = aes(x = Country_Region, y = Total_Confirmed))
+March_conf_plot + 
+    geom_point() +
+  ggtitle("Top 10 Total Confirmed Cases per Country, March 2020")
+
+Sept_conf_plot <- ggplot(data = report_Sept_top10_conf, 
+                       mapping = aes(x = Country_Region, y = Total_Confirmed))
+Sept_conf_plot + 
+    geom_point() +
+  ggtitle("Top 10 Total Confirmed Cases per Country, September 2020")
+```
+ 
+## Make using geom_bar of the (top) 10 states with the most confirmed cases and deaths (two separate graphs) on 3/12/2020 and 9/12/2020.
+```{r}
+report_March_top_US_conf <- report_March_US_conf %>%
+  select(Province_State, Confirmed) %>%
+  arrange(desc(Confirmed)) %>%
+  slice(1:10)
+
+ggplot(report_March_top_US_conf, aes(x = Confirmed, y = Province_State)) +
+geom_bar(stat = 'identity') +
+  ggtitle("Top 10 Total Confirmed Cases per US State, March 2020")
+
+report_Sept_top_US_conf <- report_Sept_US_conf %>%
+  select(Province_State, Total_Confirmed) %>%
+  arrange(desc(Total_Confirmed)) %>%
+  slice(1:10)
+
+ggplot(report_Sept_top_US_conf, aes(x = Total_Confirmed, y = Province_State)) +
+geom_bar(stat = 'identity') +
+  ggtitle("Top 10 Total Confirmed Cases per US State, September 2020")
+```
+
+

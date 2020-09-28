@@ -262,3 +262,51 @@ time_series_long_joined_ratio %>%
   facet_wrap(~Country_Region, ncol=2, scales="free_y")
 ```
 
+## Using Facet_Wraps make a graph from the times series data for confirmed cases for all US states and territories. 
+(Hint: Instead of the global time series use the US time series data in the same folder time_series_covid19_deaths_US.csv and time_series_covid19_confirmed_US)
+```{r}
+#Get the data
+download.file(url="https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_US.csv", destfile = "data/time_series_covid19_confirmed_US.csv")
+
+time_series_covid19_confirmed_US <- read.csv("data/time_series_covid19_confirmed_US.csv")
+```
+
+```{r, fig.height = 20, fig.width = 10}
+#Find the sum per state per date
+time_series_covid19_confirmed_US_totals <- time_series_covid19_confirmed_US %>%
+  select(-c(UID,iso2,iso3,code3,FIPS,Lat,Long_,Combined_Key,Admin2,Country_Region)) %>%
+  group_by(Province_State) %>%
+  summarise_each(funs(sum)) 
+
+#remove those X's from the dates
+time_series_covid19_confirmed_US_totals <- time_series_covid19_confirmed_US_totals %>% rename_at(vars(starts_with("X")), funs(str_remove(., "X")))
+  
+#Pivot!
+confirmed_US_totals_long <- time_series_covid19_confirmed_US_totals %>%
+  pivot_longer(-c(Province_State),
+               names_to = "Date",
+               values_to = "Confirmed")
+
+#Okay, well let's fix those characters to proper dates
+
+confirmed_US_totals_long$Date <- as.Date(confirmed_US_totals_long$Date, format = "%m.%d.%y")
+
+#Graph!
+confirmed_US_totals_long %>%
+ggplot(aes(x = Date,  y = Confirmed)) + 
+    geom_point() +
+    geom_line() +
+    ggtitle("Total Confirmed Cases by US State") +
+  facet_wrap(~Province_State)
+```
+
+## Let's use a new theme.
+```{r, fig.height = 20, fig.width = 20}
+confirmed_US_totals_long %>%
+ggplot(aes(x = Date,  y = Confirmed)) + 
+    geom_point() +
+    geom_line() +
+    ggtitle("Total Confirmed Cases by US State") +
+  facet_wrap(~Province_State) +
+  theme_dark()
+```

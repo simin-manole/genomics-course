@@ -83,9 +83,9 @@ animate(p, end_pause = 15)
 ## Challenge 1
 ### Print a graph (different from the one above) to a png file using 3*ppi for the height and width and display the png file in the report using the above R Markdown format.
 
-```{r}
+```{r, message=FALSE}
 #Convert to PNG
-ppi <- 300
+ppi <- 200
 png("images/time_series_example_plot.png", width=3*ppi, height=3*ppi, res=ppi)
 time_series_long_joined %>% 
   group_by(Country_Region,Date) %>% 
@@ -93,10 +93,12 @@ time_series_long_joined %>%
   filter (Country_Region == "Brazil") %>% 
     ggplot(aes(x = Date,  y = Deaths)) + 
     geom_point() +
-    geom_line() #+ ggtitle("Brazil COVID-19 Deaths")
+    geom_line() +
+    ggtitle("Brazil COVID-19 Deaths")
+dev.off()
 ```
 
-![Brazil COVID-19 Deaths](images/time_series_example_plot.png) 
+![](images/time_series_example_plot.png) 
 
 ## Challenge 2
 ### Turn one of the exercises from Lab 5 into an interactive graph with plotyly
@@ -126,7 +128,34 @@ animate(g,renderer = gifski_renderer(), end_pause = 15)
 ## Challenge 3
 ### Create an animated graph of your choosing using the time series data to display an aspect (e.g. states or countries) of the data that is important to you.
 
-```{r}
+```{r, warning=FALSE, error=FALSE, message=FALSE}
+#Data Wrangling
+download.file(url="https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_US.csv", destfile = "data/time_series_covid19_confirmed_US.csv")
+
+time_series_covid19_confirmed_US <- read.csv("data/time_series_covid19_confirmed_US.csv")
+
+time_series_covid19_confirmed_US_totals <- time_series_covid19_confirmed_US %>% select(-c(UID,iso2,iso3,code3,FIPS,Lat,Long_,Combined_Key,Admin2,Country_Region)) %>%  group_by(Province_State) %>%  summarise_each(funs(sum)) 
+
+time_series_covid19_confirmed_US_totals <- time_series_covid19_confirmed_US_totals %>% rename_at(vars(starts_with("X")), funs(str_remove(., "X")))
+  
+confirmed_US_totals_long <- time_series_covid19_confirmed_US_totals %>%  pivot_longer(-c(Province_State), names_to = "Date", values_to = "Confirmed")
+confirmed_US_totals_long$Date <- as.Date(confirmed_US_totals_long$Date, format = "%m.%d.%y")
+
+ten_highest_confirmed_df <- confirmed_US_totals_long %>% 
+  group_by(Province_State) %>% 
+  summarise("Confirmed_Total"= sum(Confirmed)) %>% 
+  arrange(desc(Confirmed_Total)) %>% 
+  head(10) 
+
+#Graph!
+c <- confirmed_US_totals_long %>%
+  filter(Province_State %in% ten_highest_confirmed_df$Province_State) %>%
+  ggplot(aes(x = Date,  y = Confirmed)) + 
+    geom_point() +
+    geom_line() +
+    ggtitle("Top 10 US States by Total Confirmed Cases") +
+    facet_wrap(~Province_State) +
+    transition_reveal(Date) 
+animate(c, end_pause = 15)
 
 ```
-

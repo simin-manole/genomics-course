@@ -1,0 +1,109 @@
+library(shiny)
+library(tidyverse)
+library(lubridate)
+library(maps)
+library(mapdata)
+library(wesanderson)
+library(rsconnect)
+
+### Preparing the times series data
+#Import Data
+time_series_confirmed <- read_csv(url("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_US.csv")) %>%
+    rename(Long = "Long_")
+time_series_deaths <- read_csv(url("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_US.csv")) %>%
+    rename(Long = "Long_")
+
+#Pivot Data
+time_series_confirmed_long <- time_series_confirmed %>% select(-c(UID,iso2,iso3,code3,FIPS,Lat,Long,Combined_Key,Country_Region)) %>%
+    pivot_longer(-c(Admin2,Province_State), names_to = "Date", values_to = "Confirmed")
+time_series_deaths_long <- time_series_deaths %>% select(-c(UID,iso2,iso3,code3,FIPS,Lat,Long,Combined_Key,Country_Region,Population)) %>%
+    pivot_longer(-c(Admin2,Province_State), names_to = "Date", values_to = "Deaths")
+# Create Keys 
+time_series_confirmed_long <- time_series_confirmed_long %>% 
+    unite(Key, Admin2, Province_State, Date, sep = ".", remove = FALSE)
+time_series_deaths_long <- time_series_deaths_long %>% 
+    unite(Key, Admin2, Province_State, Date, sep = ".")
+
+# Join tables 
+time_series_long_joined <- full_join(time_series_confirmed_long, time_series_deaths_long, by = c("Key"))  %>% select(-Key)
+
+#Add lat and long back in
+time_series_long_lat <- time_series_confirmed %>% select(Admin2,Lat,Long)
+time_series_long_joined <- full_join(time_series_long_lat, time_series_long_joined, by = c("Admin2"))
+
+# Fix the date
+time_series_long_joined$Date <- mdy(time_series_long_joined$Date)
+
+# rename the data
+us_time_series <- time_series_long_joined %>% rename(subregion = Admin2)
+
+
+
+# get and format the map data
+us <- map_data("state") 
+counties <- map_data("county") %>% 
+    unite(Key, subregion, region, sep = ".", remove = FALSE)
+
+
+# Get first and last date for graph ***There are NA in the date field to consider
+first_date = min(time_series_long_joined$Date, na.rm = TRUE)
+last_date = max(time_series_long_joined$Date, na.rm = TRUE)
+
+# Defining reporting types
+Report_Type = c("Confirmed", "Deaths")
+
+# Define UI for application 
+ui <- fluidPage(
+    titlePanel("US County Graphs from COVID-19 Reporting data"),
+    p("Data for this application are from the Johns Hopkins Center for Systems Science and Engineering",
+      tags$a("GitHub Repository", href="https://github.com/CSSEGISandData")
+    ),
+    tags$br(),
+    tags$hr(),
+    sidebarLayout(
+        sidebarPanel(
+            selectInput("select_type", label = "Report Type", choices = Report_Type, selected = "Confirmed"),
+            sliderInput("slider_date", label = "Report Date", min = first_date, max = last_date, value = first_date, step = 7)
+        ),
+        mainPanel(
+            plotOutput("Plot1")
+        )
+    )
+)
+
+# Define server logic required to make the plot
+server <- function(input, output) {
+  
+  output$Plot1 <- renderPlot({
+    # develop data set to graph
+    pick_date <- us_time_series %>% 
+      filter(Date == input$slider_date) %>% 
+      #filter(Date == "2020-03-26") %>% 
+      group_by(subregion) %>% 
+      summarise_at(c("Confirmed", "Deaths"), sum)
+    
+    #Holy crap one of them is capitalized this is so annoying omg
+    pick_date <- pick_date %>%
+      mutate(subregion = tolower(subregion))
+    
+     
+    # We need to join the us map data with our daily report to make one data frame/tibble
+    us_join <- left_join(counties, pick_date, by = "subregion")
+    
+    # plot world map
+    ggplot(data = us, mapping = aes(x = long, y = lat, group = group)) + 
+      coord_fixed(1.3) + 
+      # Add data layer
+      geom_polygon(data = us_join, aes_string(fill = input$select_type), color = "black") +
+      scale_fill_gradientn(colours = 
+                             wes_palette("Zissou1", 100, type = "continuous"),
+                           trans = "log10") +
+      ggtitle("JHU COVID-19 data for reporting type:", input$select_type)
+    
+  })
+}
+
+# Run the application 
+shinyApp(ui = ui, server = server)
+
+#rsconnect::deployApp('C:\\Users\\Simin\\Desktop\\Lab6x')

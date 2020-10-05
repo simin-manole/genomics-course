@@ -378,8 +378,117 @@ summary {
 </div>
 
 
-<div id="section" class="section level2">
-<h2></h2>
+<div id="shiny-app" class="section level2">
+<h2><a href="https://simin-manole.shinyapps.io/Lab6x/">Shiny App</a></h2>
+<pre class="r"><code>library(shiny)
+library(tidyverse)
+library(lubridate)
+library(maps)
+library(mapdata)
+library(wesanderson)
+library(rsconnect)
+
+### Preparing the times series data
+#Import Data
+time_series_confirmed &lt;- read_csv(url(&quot;https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_US.csv&quot;)) %&gt;%
+    rename(Long = &quot;Long_&quot;)
+time_series_deaths &lt;- read_csv(url(&quot;https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_US.csv&quot;)) %&gt;%
+    rename(Long = &quot;Long_&quot;)
+
+#Pivot Data
+time_series_confirmed_long &lt;- time_series_confirmed %&gt;% select(-c(UID,iso2,iso3,code3,FIPS,Lat,Long,Combined_Key,Country_Region)) %&gt;%
+    pivot_longer(-c(Admin2,Province_State), names_to = &quot;Date&quot;, values_to = &quot;Confirmed&quot;)
+time_series_deaths_long &lt;- time_series_deaths %&gt;% select(-c(UID,iso2,iso3,code3,FIPS,Lat,Long,Combined_Key,Country_Region,Population)) %&gt;%
+    pivot_longer(-c(Admin2,Province_State), names_to = &quot;Date&quot;, values_to = &quot;Deaths&quot;)
+# Create Keys 
+time_series_confirmed_long &lt;- time_series_confirmed_long %&gt;% 
+    unite(Key, Admin2, Province_State, Date, sep = &quot;.&quot;, remove = FALSE)
+time_series_deaths_long &lt;- time_series_deaths_long %&gt;% 
+    unite(Key, Admin2, Province_State, Date, sep = &quot;.&quot;)
+
+# Join tables 
+time_series_long_joined &lt;- full_join(time_series_confirmed_long, time_series_deaths_long, by = c(&quot;Key&quot;))  %&gt;% select(-Key)
+
+#Add lat and long back in
+time_series_long_lat &lt;- time_series_confirmed %&gt;% select(Admin2,Lat,Long)
+time_series_long_joined &lt;- full_join(time_series_long_lat, time_series_long_joined, by = c(&quot;Admin2&quot;))
+
+# Fix the date
+time_series_long_joined$Date &lt;- mdy(time_series_long_joined$Date)
+
+# rename the data
+us_time_series &lt;- time_series_long_joined %&gt;% rename(subregion = Admin2)
+
+
+
+# get and format the map data
+us &lt;- map_data(&quot;state&quot;) 
+counties &lt;- map_data(&quot;county&quot;) %&gt;% 
+    unite(Key, subregion, region, sep = &quot;.&quot;, remove = FALSE)
+
+
+# Get first and last date for graph ***There are NA in the date field to consider
+first_date = min(time_series_long_joined$Date, na.rm = TRUE)
+last_date = max(time_series_long_joined$Date, na.rm = TRUE)
+
+# Defining reporting types
+Report_Type = c(&quot;Confirmed&quot;, &quot;Deaths&quot;)
+
+# Define UI for application 
+ui &lt;- fluidPage(
+    titlePanel(&quot;US County Graphs from COVID-19 Reporting data&quot;),
+    p(&quot;Data for this application are from the Johns Hopkins Center for Systems Science and Engineering&quot;,
+      tags$a(&quot;GitHub Repository&quot;, href=&quot;https://github.com/CSSEGISandData&quot;)
+    ),
+    tags$br(),
+    tags$hr(),
+    sidebarLayout(
+        sidebarPanel(
+            selectInput(&quot;select_type&quot;, label = &quot;Report Type&quot;, choices = Report_Type, selected = &quot;Confirmed&quot;),
+            sliderInput(&quot;slider_date&quot;, label = &quot;Report Date&quot;, min = first_date, max = last_date, value = first_date, step = 7)
+        ),
+        mainPanel(
+            plotOutput(&quot;Plot1&quot;)
+        )
+    )
+)
+
+# Define server logic required to make the plot
+server &lt;- function(input, output) {
+  
+  output$Plot1 &lt;- renderPlot({
+    # develop data set to graph
+    pick_date &lt;- us_time_series %&gt;% 
+      filter(Date == input$slider_date) %&gt;% 
+      #filter(Date == &quot;2020-03-26&quot;) %&gt;% 
+      group_by(subregion) %&gt;% 
+      summarise_at(c(&quot;Confirmed&quot;, &quot;Deaths&quot;), sum)
+    
+    #Holy crap one of them is capitalized this is so annoying omg
+    pick_date &lt;- pick_date %&gt;%
+      mutate(subregion = tolower(subregion))
+    
+     
+    # We need to join the us map data with our daily report to make one data frame/tibble
+    us_join &lt;- left_join(counties, pick_date, by = &quot;subregion&quot;)
+    
+    # plot world map
+    ggplot(data = us, mapping = aes(x = long, y = lat, group = group)) + 
+      coord_fixed(1.3) + 
+      # Add data layer
+      geom_polygon(data = us_join, aes_string(fill = input$select_type), color = &quot;black&quot;) +
+      scale_fill_gradientn(colours = 
+                             wes_palette(&quot;Zissou1&quot;, 100, type = &quot;continuous&quot;),
+                           trans = &quot;log10&quot;) +
+      ggtitle(&quot;JHU COVID-19 data for reporting type:&quot;, input$select_type)
+    
+  })
+}
+
+# Run the application 
+shinyApp(ui = ui, server = server)
+
+rsconnect::deployApp(&#39;C:\\Users\\Simin\\Desktop\\Lab6x&#39;)</code></pre>
 </div>
 
 

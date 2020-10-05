@@ -1,0 +1,13 @@
+name: Lab6x
+title: Lab6x
+username:
+account: simin-manole
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 2949309
+bundleId: 3705781
+url: https://simin-manole.shinyapps.io/Lab6x/
+when: 1601932349.22973
+asMultiple: FALSE
+asStatic: FALSE
+ignoredFiles: data/counties.rds|data/helpers.R|data/US_counties.R

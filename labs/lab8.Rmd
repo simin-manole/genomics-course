@@ -18,7 +18,7 @@ knitr::opts_chunk$set(echo = TRUE)
 6. Save the output in the folder with your original data.
 7. Open the data folder and download the .tre data for graphing.
 8. Download and display the .svg tree from FasttreeMP (converted to png, below).
-9. Use the FasttreeMP data in R to [create and label a tree graph.](lab8.html)
+9. Use the FasttreeMP data in R to [create and label a tree graph.](https://simin-manole.github.io/genomics-course/labs/lab8.html#make-a-tree-for-the-fasttreemp-output-on-cipres)
 
 ![](images/Tree_image.png)
 

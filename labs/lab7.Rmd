@@ -1,0 +1,90 @@
+---
+title: "Lab 7"
+author: "Simin Manole"
+date: "10/18/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+### Loading packages and reading in data with tximeta.
+
+#### Let's load in the data and check our files list in two ways.
+```{r, message=FALSE}
+library(tidyverse)
+library(ggplot2)
+library(airway)
+```
+
+```{r}
+dir <- system.file("extdata", package="airway", mustWork=TRUE)
+list.files(dir)
+```
+
+```{r}
+list.files(file.path(dir, "quants"))
+```
+
+#### Open and convert the sample_table.csv to a dataframe.
+```{r}
+csvfile <- file.path(dir, "sample_table.csv")
+coldata <- read.csv(csvfile, row.names=1, stringsAsFactors=FALSE)
+coldata
+```
+
+#### Add a way to call data from the dataframe and verify it calls real data.
+```{r}
+coldata <- coldata[1:2,]
+coldata$names <- coldata$Run
+coldata$files <- file.path(dir, "quants", coldata$names, "quant.sf.gz")
+file.exists(coldata$files)
+```
+
+#### Use txitmeta to load the annotations for the transcriptomes listed in coldata. Check the number of transcripts.
+```{r}
+library(tximeta)
+se <- tximeta(coldata)
+dim(se)
+```
+
+#### Summarize transcripts to their respective genes. Should have fewer entries than before.
+```{r}
+#head(rownames(se))
+gse <- summarizeToGene(se)
+dim(gse)
+```
+
+```{r}
+head(rownames(gse))
+```
+
+###Let's take a look at the data now.
+```{r}
+data(gse)
+gse
+```
+
+### That was an overview of all the data, but what about the assays, or "counts"?
+??????????????????????????????????????????????????????
+```{r}
+assayNames(gse)
+
+head(assay(gse), 3)
+
+colSums(assay(gse))
+
+rowRanges(gse)
+
+seqinfo(rowRanges(gse))
+
+colData(gse)
+```
+
+```{r}
+
+```
+

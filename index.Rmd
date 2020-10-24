@@ -30,3 +30,5 @@ knitr::opts_chunk$set(echo = TRUE)
 ## [Lab 6](labs/lab6.html)
 
 ## [Lab 6x - Shiny](labs/lab6x.html)
+
+## [Lab 8](labs/lab8.html)

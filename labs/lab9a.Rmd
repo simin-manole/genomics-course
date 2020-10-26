@@ -1,0 +1,63 @@
+---
+title: "Lab 9A"
+author: "Simin Manole"
+date: "10/26/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, message=FALSE}
+library(stringr)
+library(tidyverse)
+```
+
+```{r}
+x <- "a\\b"
+str_view(x, "\\\\")
+```
+
+## Exercise 14.3.1.1
+```{r}
+# 1. Explain why each of these strings don’t match a \: "\", "\\", "\\\".
+###  "\" - A single backslash is an escape character in regular expressions, so R believes the code includes all the characters after it now.
+###  "\\" - You could create a regular expression for \ with this, but that isn't a usable string
+###  "\\\" - Like with a single backslash, the third one here leaves the code open.
+###  "\\\\" - We now have two backslashes surrounding the "\\" that reads as "\"
+```
+
+## Exercise 14.3.2.1
+```{r}
+# 1. How would you match the literal string "$^$"?
+x <- c("apple", "$^$")
+str_view(x, "\\$\\^\\$")
+```
+
+## Exercise 14.3.3.1
+### Create regular expressions to find all words that:
+```{r}
+x <- c("apple", "egg", "speed", "bed", "wise", "wing", "hmm", "psst")
+# 1. Start with a vowel.
+str_view(x, "^[aeiouy]")
+# 2. That only contain consonants. (Hint: thinking about matching “not”-vowels.)
+str_view(x, "^[^aeiou]*$")
+# 3. End with "ed", but not with "eed".
+str_view(x, "[^e]ed$")
+# 4. End with "ing" or "ise".
+str_view(x, "(ise|ing)$")
+```
+
+## Exercise 14.3.4.1
+```{r}
+# 1. Describe the equivalents of ?, +, * in {m,n} form.
+##  ?: 0 or 1
+##  +: 1 or more
+##  *: 0 or more
+#### {0,1}
+#### {1,}
+#### {0,}
+```
+
+

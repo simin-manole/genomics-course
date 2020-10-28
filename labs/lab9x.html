@@ -456,13 +456,34 @@ if(y == &quot;Save&quot;) {
 }</code></pre>
 <p>“Your roll?”</p>
 <pre class="r"><code>x</code></pre>
-<pre><code>## [1] 14.96813</code></pre>
+<pre><code>## [1] 1.183552</code></pre>
 <p>“That’s a…”</p>
 <pre class="r"><code>y</code></pre>
-<pre><code>## [1] &quot;Save&quot;</code></pre>
+<pre><code>## [1] &quot;Fail&quot;</code></pre>
 <p>“Did I make it?”</p>
 <pre class="r"><code>z</code></pre>
-<pre><code>## [1] &quot;You live.&quot;</code></pre>
+<pre><code>## [1] &quot;Yeah that&#39;s not happening buddy.&quot;</code></pre>
+</div>
+<div id="your-first-function" class="section level2">
+<h2>Your First Function</h2>
+<p>Here’s a simple function that takes no arguments and does nothing.</p>
+<pre class="r"><code>f &lt;- function() {
+       ## This is an empty function
+}
+
+## Functions have their own class
+class(f)  
+[1] &quot;function&quot;
+
+## Execute this function
+f()       
+NULL</code></pre>
+<p>The next thing we can do is create a function that actually has a non-trivial function body.</p>
+<pre class="r"><code>f &lt;- function() {
+         cat(&quot;Hello, world!\n&quot;)
+}
+f()</code></pre>
+<pre><code>## Hello, world!</code></pre>
 </div>
 
 

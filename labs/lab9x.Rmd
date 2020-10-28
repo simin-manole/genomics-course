@@ -73,3 +73,25 @@ z
 ```
 
 ## Your First Function
+Here’s a simple function that takes no arguments and does nothing.
+```{r, eval=FALSE}
+f <- function() {
+       ## This is an empty function
+}
+
+## Functions have their own class
+class(f)  
+[1] "function"
+
+## Execute this function
+f()       
+NULL
+```
+
+The next thing we can do is create a function that actually has a non-trivial function body.
+```{r,}
+f <- function() {
+         cat("Hello, world!\n")
+}
+f()
+```

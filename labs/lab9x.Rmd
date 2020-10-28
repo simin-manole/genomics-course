@@ -1,0 +1,75 @@
+---
+title: "Lab 9x"
+author: "Simin Manole"
+date: "10/28/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Conditional statements with if-else
+A basic "if" statement if condition is true
+```{r, eval=FALSE}
+if(<condition>) {
+        ## do something
+} 
+## Continue with rest of code
+```
+
+An "if" statement with a function for condition being false
+```{r, eval=FALSE}
+if(<condition>) {
+        ## do something
+} 
+else {
+        ## do something else
+}
+```
+
+Testing two "if" statements in series with a function for both being false.
+```{r, eval=FALSE}
+if(<condition1>) {
+        ## do something
+} else if(<condition2>)  {
+        ## do something different
+} else {
+        ## do something different
+}
+```
+
+An example:
+  "Your character is unconscious. Roll a d20 so see if they wake up or not. Roll a ten or higher to make the save."
+```{r}
+## Generate a uniform random number
+x <- runif(1, 1, 20)  
+if(x > 9.999) {
+        y <- "Save"
+} else {
+        y <- "Fail"
+}
+
+if(y == "Save") {
+        z <- "You live."
+} else {
+        z <- "Yeah that's not happening buddy."
+}
+```
+
+"Your roll?"
+```{r}
+x
+```
+
+"That's a..." 
+```{r}
+y
+```
+
+"Did I make it?"
+```{r}
+z
+```
+
+## Your First Function

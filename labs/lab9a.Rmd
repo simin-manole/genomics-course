@@ -60,4 +60,81 @@ str_view(x, "(ise|ing)$")
 #### {0,}
 ```
 
+## Exercise 14.3.5.1
+```{r, eval=FALSE}
+fruits <- c("banana", "coconut", "cucumber", "jujube", "papaya", "salal berry")
+###Describe, in words, what these expressions will match:
+#
+# 1. (.)\1\1
+# 2. "(.)(.)\\2\\1"
+# 3. (..)\1
+# 4. "(.).\\1.\\1"
+# 5. "(.)(.)(.).*\\3\\2\\1"
+############################
+# 1. A character repeated three times, 
+  str_view(fruits, "(.)\\1\\1")
+# 2. A pair of characters followed by the pair in reverse, 
+  str_view(fruits, "(.)(.)\\2\\1")
+# 3. Any pair of characters repeated, 
+  str_view(fruits, "(..)\\1")
+# 4. A character followed by any character, then the first character, any character, then the first character finally
+  str_view(fruits, "(.).\\1.\\1")
+# 5. Three of any characters, followed by an unknown number of characters, but that followed by the first three characters in reverse order.
+  str_view(fruits, "(.)(.)(.).*\\3\\2\\1")
+```
+
+## Exercise 14.4.1.1 
+```{r, eval=FALSE}
+#1. Find all words that start or end with x.
+words[str_detect(words, "^x|x$")]
+
+start_x <- str_detect(words, "^x") 
+end_x <- str_detect(words, "x$")
+words[start_x | end_x]
+
+#2. Words starting with vowel and ending with consonant.
+words[str_detect(words, "^[aeiou].*[^aeiou]$")]
+
+start_vowel <- str_detect(words, "^[aeiou]") 
+end_consonant <- str_detect(words , "[^aeiou]$")
+words[start_vowel & end_consonant]
+
+#3. Are there any words that contain at least one of each different vowel?
+words[str_detect(words, "a") &
+  str_detect(words, "e") &
+  str_detect(words, "i") &
+  str_detect(words, "o") &
+  str_detect(words, "u")]
+```
+
+## Exercise 14.4.2.1
+```{r}
+# In the previous example, you might have noticed that the regular expression matched “flickered”, which is not a colour. Modify the regex to fix the problem.
+colours <- c("red", "orange", "yellow", "green", "blue", "purple")
+colour_words <- str_c("\\b(", str_c(colours, collapse = "|"), ")\\b")
+
+more <- sentences[str_count(sentences, colour_words) > 1]
+str_view_all(more, colour_words)
+```
+
+## Exercise 14.4.3.1
+```{r}
+# Find all words that come after a “number” like “one”, “two”, “three” etc. Pull out both the number and the word.
+numword <- "\\b(one|two|three|four|five|six|seven|eight|nine|ten) +(\\w+)"
+sentences[str_detect(sentences, numword)] %>%
+  str_extract(numword)
+```
+
+## Exercise 14.4.4.1
+```{r}
+pronouns <- str_replace_all("he/him/his", "/", "\\\\")
+writeLines(pronouns)
+```
+
+## Exercise 14.4.5.1
+```{r}
+# Split up a string like “apples, pears, and bananas” into individual components.
+fruit <- c("apples, pears, and bananas") 
+str_split(fruit, boundary("word"))[[1]]
+```
 

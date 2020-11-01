@@ -1356,8 +1356,8 @@ library(tidyverse)</code></pre>
 <pre><code>## Warning: package &#39;tibble&#39; was built under R version 4.0.3</code></pre>
 <pre class="r"><code>x &lt;- &quot;a\\b&quot;
 str_view(x, &quot;\\\\&quot;)</code></pre>
-<div id="htmlwidget-51a78e2450dabeff1e80" style="width:960px;height:100%;" class="str_view html-widget"></div>
-<script type="application/json" data-for="htmlwidget-51a78e2450dabeff1e80">{"x":{"html":"<ul>\n  <li>a<span class='match'>\\<\/span>b<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-6e477cf48305e022196e" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-6e477cf48305e022196e">{"x":{"html":"<ul>\n  <li>a<span class='match'>\\<\/span>b<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
 <div id="exercise-14.3.1.1" class="section level2">
 <h2>Exercise 14.3.1.1</h2>
 <pre class="r"><code># 1. Explain why each of these strings don’t match a \: &quot;\&quot;, &quot;\\&quot;, &quot;\\\&quot;.
@@ -1371,8 +1371,8 @@ str_view(x, &quot;\\\\&quot;)</code></pre>
 <pre class="r"><code># 1. How would you match the literal string &quot;$^$&quot;?
 x &lt;- c(&quot;apple&quot;, &quot;$^$&quot;)
 str_view(x, &quot;\\$\\^\\$&quot;)</code></pre>
-<div id="htmlwidget-1ae9e53d73bc9d615be6" style="width:960px;height:100%;" class="str_view html-widget"></div>
-<script type="application/json" data-for="htmlwidget-1ae9e53d73bc9d615be6">{"x":{"html":"<ul>\n  <li>apple<\/li>\n  <li><span class='match'>$^$<\/span><\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-63d280fe7612b84d0a9f" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-63d280fe7612b84d0a9f">{"x":{"html":"<ul>\n  <li>apple<\/li>\n  <li><span class='match'>$^$<\/span><\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
 </div>
 <div id="exercise-14.3.3.1" class="section level2">
 <h2>Exercise 14.3.3.1</h2>
@@ -1381,20 +1381,20 @@ str_view(x, &quot;\\$\\^\\$&quot;)</code></pre>
 <pre class="r"><code>x &lt;- c(&quot;apple&quot;, &quot;egg&quot;, &quot;speed&quot;, &quot;bed&quot;, &quot;wise&quot;, &quot;wing&quot;, &quot;hmm&quot;, &quot;psst&quot;)
 # 1. Start with a vowel.
 str_view(x, &quot;^[aeiouy]&quot;)</code></pre>
-<div id="htmlwidget-1c40ec940e55bea440c3" style="width:960px;height:100%;" class="str_view html-widget"></div>
-<script type="application/json" data-for="htmlwidget-1c40ec940e55bea440c3">{"x":{"html":"<ul>\n  <li><span class='match'>a<\/span>pple<\/li>\n  <li><span class='match'>e<\/span>gg<\/li>\n  <li>speed<\/li>\n  <li>bed<\/li>\n  <li>wise<\/li>\n  <li>wing<\/li>\n  <li>hmm<\/li>\n  <li>psst<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-bf813e12632c457ec429" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-bf813e12632c457ec429">{"x":{"html":"<ul>\n  <li><span class='match'>a<\/span>pple<\/li>\n  <li><span class='match'>e<\/span>gg<\/li>\n  <li>speed<\/li>\n  <li>bed<\/li>\n  <li>wise<\/li>\n  <li>wing<\/li>\n  <li>hmm<\/li>\n  <li>psst<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
 <pre class="r"><code># 2. That only contain consonants. (Hint: thinking about matching “not”-vowels.)
 str_view(x, &quot;^[^aeiou]*$&quot;)</code></pre>
-<div id="htmlwidget-84fcef3287bac769a429" style="width:960px;height:100%;" class="str_view html-widget"></div>
-<script type="application/json" data-for="htmlwidget-84fcef3287bac769a429">{"x":{"html":"<ul>\n  <li>apple<\/li>\n  <li>egg<\/li>\n  <li>speed<\/li>\n  <li>bed<\/li>\n  <li>wise<\/li>\n  <li>wing<\/li>\n  <li><span class='match'>hmm<\/span><\/li>\n  <li><span class='match'>psst<\/span><\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-a81d96d06f90db77dc97" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-a81d96d06f90db77dc97">{"x":{"html":"<ul>\n  <li>apple<\/li>\n  <li>egg<\/li>\n  <li>speed<\/li>\n  <li>bed<\/li>\n  <li>wise<\/li>\n  <li>wing<\/li>\n  <li><span class='match'>hmm<\/span><\/li>\n  <li><span class='match'>psst<\/span><\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
 <pre class="r"><code># 3. End with &quot;ed&quot;, but not with &quot;eed&quot;.
 str_view(x, &quot;[^e]ed$&quot;)</code></pre>
-<div id="htmlwidget-e49217f5b8c17d78b069" style="width:960px;height:100%;" class="str_view html-widget"></div>
-<script type="application/json" data-for="htmlwidget-e49217f5b8c17d78b069">{"x":{"html":"<ul>\n  <li>apple<\/li>\n  <li>egg<\/li>\n  <li>speed<\/li>\n  <li><span class='match'>bed<\/span><\/li>\n  <li>wise<\/li>\n  <li>wing<\/li>\n  <li>hmm<\/li>\n  <li>psst<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-51b2b608304247e32dfc" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-51b2b608304247e32dfc">{"x":{"html":"<ul>\n  <li>apple<\/li>\n  <li>egg<\/li>\n  <li>speed<\/li>\n  <li><span class='match'>bed<\/span><\/li>\n  <li>wise<\/li>\n  <li>wing<\/li>\n  <li>hmm<\/li>\n  <li>psst<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
 <pre class="r"><code># 4. End with &quot;ing&quot; or &quot;ise&quot;.
 str_view(x, &quot;(ise|ing)$&quot;)</code></pre>
-<div id="htmlwidget-4d21db448cd106eb142f" style="width:960px;height:100%;" class="str_view html-widget"></div>
-<script type="application/json" data-for="htmlwidget-4d21db448cd106eb142f">{"x":{"html":"<ul>\n  <li>apple<\/li>\n  <li>egg<\/li>\n  <li>speed<\/li>\n  <li>bed<\/li>\n  <li>w<span class='match'>ise<\/span><\/li>\n  <li>w<span class='match'>ing<\/span><\/li>\n  <li>hmm<\/li>\n  <li>psst<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-19a87c51e0cfb3df24bd" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-19a87c51e0cfb3df24bd">{"x":{"html":"<ul>\n  <li>apple<\/li>\n  <li>egg<\/li>\n  <li>speed<\/li>\n  <li>bed<\/li>\n  <li>w<span class='match'>ise<\/span><\/li>\n  <li>w<span class='match'>ing<\/span><\/li>\n  <li>hmm<\/li>\n  <li>psst<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 <div id="exercise-14.3.4.1" class="section level2">
@@ -1406,6 +1406,88 @@ str_view(x, &quot;(ise|ing)$&quot;)</code></pre>
 #### {0,1}
 #### {1,}
 #### {0,}</code></pre>
+</div>
+<div id="exercise-14.3.5.1" class="section level2">
+<h2>Exercise 14.3.5.1</h2>
+<pre class="r"><code>fruits &lt;- c(&quot;banana&quot;, &quot;coconut&quot;, &quot;cucumber&quot;, &quot;jujube&quot;, &quot;papaya&quot;, &quot;salal berry&quot;)
+###Describe, in words, what these expressions will match:
+#
+# 1. (.)\1\1
+# 2. &quot;(.)(.)\\2\\1&quot;
+# 3. (..)\1
+# 4. &quot;(.).\\1.\\1&quot;
+# 5. &quot;(.)(.)(.).*\\3\\2\\1&quot;
+############################
+# 1. A character repeated three times, 
+  str_view(fruits, &quot;(.)\\1\\1&quot;)
+# 2. A pair of characters followed by the pair in reverse, 
+  str_view(fruits, &quot;(.)(.)\\2\\1&quot;)
+# 3. Any pair of characters repeated, 
+  str_view(fruits, &quot;(..)\\1&quot;)
+# 4. A character followed by any character, then the first character, any character, then the first character finally
+  str_view(fruits, &quot;(.).\\1.\\1&quot;)
+# 5. Three of any characters, followed by an unknown number of characters, but that followed by the first three characters in reverse order.
+  str_view(fruits, &quot;(.)(.)(.).*\\3\\2\\1&quot;)</code></pre>
+</div>
+<div id="exercise-14.4.1.1" class="section level2">
+<h2>Exercise 14.4.1.1</h2>
+<pre class="r"><code>#1. Find all words that start or end with x.
+words[str_detect(words, &quot;^x|x$&quot;)]
+
+start_x &lt;- str_detect(words, &quot;^x&quot;) 
+end_x &lt;- str_detect(words, &quot;x$&quot;)
+words[start_x | end_x]
+
+#2. Words starting with vowel and ending with consonant.
+words[str_detect(words, &quot;^[aeiou].*[^aeiou]$&quot;)]
+
+start_vowel &lt;- str_detect(words, &quot;^[aeiou]&quot;) 
+end_consonant &lt;- str_detect(words , &quot;[^aeiou]$&quot;)
+words[start_vowel &amp; end_consonant]
+
+#3. Are there any words that contain at least one of each different vowel?
+words[str_detect(words, &quot;a&quot;) &amp;
+  str_detect(words, &quot;e&quot;) &amp;
+  str_detect(words, &quot;i&quot;) &amp;
+  str_detect(words, &quot;o&quot;) &amp;
+  str_detect(words, &quot;u&quot;)]</code></pre>
+</div>
+<div id="exercise-14.4.2.1" class="section level2">
+<h2>Exercise 14.4.2.1</h2>
+<pre class="r"><code># In the previous example, you might have noticed that the regular expression matched “flickered”, which is not a colour. Modify the regex to fix the problem.
+colours &lt;- c(&quot;red&quot;, &quot;orange&quot;, &quot;yellow&quot;, &quot;green&quot;, &quot;blue&quot;, &quot;purple&quot;)
+colour_words &lt;- str_c(&quot;\\b(&quot;, str_c(colours, collapse = &quot;|&quot;), &quot;)\\b&quot;)
+
+more &lt;- sentences[str_count(sentences, colour_words) &gt; 1]
+str_view_all(more, colour_words)</code></pre>
+<div id="htmlwidget-177dea453bc3506425d5" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-177dea453bc3506425d5">{"x":{"html":"<ul>\n  <li>It is hard to erase <span class='match'>blue<\/span> or <span class='match'>red<\/span> ink.<\/li>\n  <li>The sky in the west is tinged with <span class='match'>orange<\/span> <span class='match'>red<\/span>.<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+</div>
+<div id="exercise-14.4.3.1" class="section level2">
+<h2>Exercise 14.4.3.1</h2>
+<pre class="r"><code># Find all words that come after a “number” like “one”, “two”, “three” etc. Pull out both the number and the word.
+numword &lt;- &quot;\\b(one|two|three|four|five|six|seven|eight|nine|ten) +(\\w+)&quot;
+sentences[str_detect(sentences, numword)] %&gt;%
+  str_extract(numword)</code></pre>
+<pre><code>##  [1] &quot;seven books&quot;   &quot;two met&quot;       &quot;two factors&quot;   &quot;three lists&quot;  
+##  [5] &quot;seven is&quot;      &quot;two when&quot;      &quot;ten inches&quot;    &quot;one war&quot;      
+##  [9] &quot;one button&quot;    &quot;six minutes&quot;   &quot;ten years&quot;     &quot;two shares&quot;   
+## [13] &quot;two distinct&quot;  &quot;five cents&quot;    &quot;two pins&quot;      &quot;five robins&quot;  
+## [17] &quot;four kinds&quot;    &quot;three story&quot;   &quot;three inches&quot;  &quot;six comes&quot;    
+## [21] &quot;three batches&quot; &quot;two leaves&quot;</code></pre>
+</div>
+<div id="exercise-14.4.4.1" class="section level2">
+<h2>Exercise 14.4.4.1</h2>
+<pre class="r"><code>pronouns &lt;- str_replace_all(&quot;he/him/his&quot;, &quot;/&quot;, &quot;\\\\&quot;)
+writeLines(pronouns)</code></pre>
+<pre><code>## he\him\his</code></pre>
+</div>
+<div id="exercise-14.4.5.1" class="section level2">
+<h2>Exercise 14.4.5.1</h2>
+<pre class="r"><code># Split up a string like “apples, pears, and bananas” into individual components.
+fruit &lt;- c(&quot;apples, pears, and bananas&quot;) 
+str_split(fruit, boundary(&quot;word&quot;))[[1]]</code></pre>
+<pre><code>## [1] &quot;apples&quot;  &quot;pears&quot;   &quot;and&quot;     &quot;bananas&quot;</code></pre>
 </div>
 
 

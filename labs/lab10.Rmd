@@ -1,0 +1,44 @@
+---
+title: "Lab 10"
+author: "Simin Manole"
+date: "11/2/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Part I - Reading VCF data
+### VCF file structure
+```{r}
+library(vcfR)
+data(vcfR_example)
+vcf
+```
+
+### The meta region
+```{r}
+strwrap(vcf@meta[1:7])
+queryMETA(vcf)
+queryMETA(vcf, element = 'DP')
+queryMETA(vcf, element = 'FORMAT=<ID=DP')
+```
+
+### The fix region
+```{r}
+head(getFIX(vcf))
+```
+
+### The gt region
+```{r}
+vcf@gt[1:6, 1:4]
+```
+
+### vcfR
+```{r}
+vcf <- read.vcfR("data/pinfsc50_filtered.vcf.gz")
+head(vcf)
+write.vcf(vcf, "data/myVCFdata_filtered.vcf.gz")
+```
+

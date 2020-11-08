@@ -213,7 +213,7 @@ plot(
   x = getPOS(vcf), 
   y = myDiff$Gprimest,  
   pch = 20, 
-  col = "#1E90FF44", 
+  col = "#00FF00", 
   xlab = "", 
   ylab = "", 
   ylim = c(0, 1), 

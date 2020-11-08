@@ -51,7 +51,7 @@ if(x > 9.999) {
 }
 
 if(y == "Save") {
-        z <- "You live."
+        z <- "You survive."
 } else {
         z <- "Yeah that's not happening buddy."
 }
@@ -72,26 +72,152 @@ y
 z
 ```
 
+## "for" loops
+These take an iterating variable and assign it to successive values from a sequence or vector. Here i is given a value from the sequence 1:10 each loop and is printed.
+```{r}
+for(i in 1:5) {
+        print(i)
+}
+```
+
+This loop does the same, but the sequence is created out of the loop, then called within it.
+```{r}
+x <- c("z", "y", "x", "w")
+for(i in 1:4) {
+        ## Print out each element of 'x'
+        print(x[i])  
+}
+```
+
+This loop is similar to the previous but the length of iteration is set to the exact lenght of the sequence
+```{r}
+## Generate a sequence based on length of 'x'
+for(i in seq_along(x)) {   
+        print(x[i])
+}
+```
+
+Alternatively, search by type and not an index-type variable.
+```{r}
+for(letter in x) {
+        print(letter)
+}
+```
+
+One line loops don't require the curly braces.
+```{r}
+for(i in 1:4) print(x[i])
+```
+
+## Nested "for" loops
+Nested loops are commonly used for multidimensional or hierarchical data structures. Here, a 2x3 matrix is made, and one loop calls the row number then the next prints data in each column, then 
+```{r}
+x <- matrix(1:9, 3, 3)
+for(i in seq_len(nrow(x))) {
+        for(j in seq_len(ncol(x))) {
+                print(x[i, j])
+        }   
+}
+```
+
+## "while" Loops
+
+Here the loop will loop until a condition is true. This example increases the value of "count" each loop and exits once it reaches a value not less than 10.
+```{r}
+count <- 0
+while(count < 5) {
+        print(count)
+        count <- count + 1
+}
+```
+
+Here there are two conditions in the test. The order is important, as here "z>=3" must be TRUE before the next condition is tested.
+```{r}
+z <- 5
+set.seed(1)
+while(z >= 3 && z <= 10) {
+        coin <- rbinom(1, 1, 0.5)
+        
+        if(coin == 1) {  
+
+## random walk
+                z <- z + 1
+        } else {
+                z <- z - 1
+        } 
+}
+print(z)
+```
+
 ## Your First Function
-Here’s a simple function that takes no arguments and does nothing.
+Here’s a simple function that does nothing. We create a function "f" that gives no result.
 ```{r, eval=FALSE}
 f <- function() {
-       ## This is an empty function
+## This is an empty function
 }
 
 ## Functions have their own class
 class(f)  
-[1] "function"
 
 ## Execute this function
 f()       
-NULL
 ```
 
-The next thing we can do is create a function that actually has a non-trivial function body.
+The next thing we can do is create a function that actually has a non-trivial function body. Aka is does something.
 ```{r,}
 f <- function() {
-         cat("Hello, world!\n")
+         cat("I'm sorry, Dave. I'm afraid I can't do that.\n")
 }
 f()
 ```
+
+Adding a function argument allows a more flexible function. Instead of calling a function multiple times, here a numerical argument will loop function f as many times as the argument that is input.
+```{r}
+f <- function(num) {
+        for(i in seq_len(num)) {
+                cat("I'm sorry, Dave. I'm afraid I can't do that.\n")
+        }
+}
+f(3)
+```
+
+For the following example, function f the characters of "Hello, world!" are repeated according to the numerical argument and the last thing called is "chars" that gives that value. f(3) then will count the string 3 times and give the number of characters.
+```{r}
+f <- function(num) {
+        hello <- "Hello, world!\n"
+        for(i in seq_len(num)) {
+                cat(hello)
+        }
+        chars <- nchar(hello) * num
+        chars
+}
+meaningoflife <- f(3)
+```
+
+```{r}
+print(meaningoflife)
+```
+
+Since our function looks for an argument a simple f() will cause an error. We can create a default value that is used in the abscesence of a user defined value.
+```{r}
+f <- function(num = 1) {
+        sorry <- "I'm sorry, Dave. I'm afraid I can't do that.\n"
+        for(i in seq_len(num)) {
+                cat(sorry)
+        }
+        chars <- nchar(sorry) * num
+        chars
+}
+f()    ## Use default value for 'num'
+```
+
+But a User defined value has priority.
+```{r}
+f(2)
+```
+
+Alternatively, we can specify the argument "num" from the funcion specifically.
+```{r}
+f(num = 2)
+```
+

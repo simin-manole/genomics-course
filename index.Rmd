@@ -35,4 +35,6 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## [Lab 9](labs/lab9a.html)
 
+## [Lab 9X - loops](labs/lab9x.html)
+
 ## [Lab 10](labs/lab10.html)

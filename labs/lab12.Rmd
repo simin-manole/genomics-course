@@ -1,0 +1,24 @@
+---
+title: "Lab 12"
+author: "Simin Manole"
+date: "12/4/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Cytoscape Tutorials
+
+### Basic Data Visualization
+
+#### [Network Image](images/lab12_1.png)
+
+### Differentially Expressed Genes
+
+#### [STRING Protein Query Up-regulated Genes Image](images/StringNetwork(1).png)
+
+#### [STRING Protein Query Down-regulated Genes Image](images/StringNetwork(2).png)
+
+#### [STRING Disease Query](images/StringNetwork(3).png)

@@ -438,6 +438,187 @@ summary {
 </div>
 </div>
 </div>
+<div id="overview-of-rcy3" class="section level2">
+<h2>Overview of RCy3</h2>
+<div id="rcy3-overview-image" class="section level4">
+<h4><a href="vignette_image.png">RCy3 Overview Image</a></h4>
+</div>
+<div id="installation" class="section level3">
+<h3>Installation</h3>
+<pre class="r"><code>if(!&quot;RCy3&quot; %in% installed.packages()){
+    install.packages(&quot;BiocManager&quot;)
+    BiocManager::install(&quot;RCy3&quot;)
+}
+library(RCy3)</code></pre>
+</div>
+<div id="getting-started" class="section level3">
+<h3>Getting started</h3>
+<p>Confirm that you have everything installed and running:</p>
+<pre class="r"><code>cytoscapePing ()</code></pre>
+<pre><code>## You are connected to Cytoscape!</code></pre>
+<pre class="r"><code>cytoscapeVersionInfo ()</code></pre>
+<pre><code>##       apiVersion cytoscapeVersion 
+##             &quot;v1&quot;          &quot;3.8.2&quot;</code></pre>
+</div>
+<div id="my-first-network" class="section level3">
+<h3>My first network</h3>
+<p>Let’s create a Cytoscape network from some basic R objects</p>
+<pre class="r"><code>nodes &lt;- data.frame(id=c(&quot;node 0&quot;,&quot;node 1&quot;,&quot;node 2&quot;,&quot;node 3&quot;),
+           group=c(&quot;A&quot;,&quot;A&quot;,&quot;B&quot;,&quot;B&quot;), # categorical strings
+           score=as.integer(c(20,10,15,5)), # integers
+           stringsAsFactors=FALSE)
+edges &lt;- data.frame(source=c(&quot;node 0&quot;,&quot;node 0&quot;,&quot;node 0&quot;,&quot;node 2&quot;),
+           target=c(&quot;node 1&quot;,&quot;node 2&quot;,&quot;node 3&quot;,&quot;node 3&quot;),
+           interaction=c(&quot;inhibits&quot;,&quot;interacts&quot;,&quot;activates&quot;,&quot;interacts&quot;),  # optional
+           weight=c(5.1,3.0,5.2,9.9), # numeric
+           stringsAsFactors=FALSE)
+
+createNetworkFromDataFrames(nodes,edges, title=&quot;my first network&quot;, collection=&quot;DataFrame Example&quot;)</code></pre>
+<pre><code>## Loading data...</code></pre>
+<pre><code>## Applying default style...</code></pre>
+<pre><code>## Applying preferred layout...</code></pre>
+<pre><code>## networkSUID 
+##         175</code></pre>
+</div>
+<div id="switch-styles" class="section level3">
+<h3>Switch styles</h3>
+<p>Check out the marquee style!</p>
+<pre class="r"><code>setVisualStyle(&#39;Marquee&#39;)</code></pre>
+<pre><code>##                 message 
+## &quot;Visual Style applied.&quot;</code></pre>
+</div>
+<div id="my-own-style" class="section level3">
+<h3>My own style</h3>
+<p>Create your own style with node attribute fill mappings and some defaults</p>
+<pre class="r"><code>style.name = &quot;myStyle&quot;
+defaults &lt;- list(NODE_SHAPE=&quot;diamond&quot;,
+                 NODE_SIZE=30,
+                 EDGE_TRANSPARENCY=120,
+                 NODE_LABEL_POSITION=&quot;W,E,c,0.00,0.00&quot;)
+nodeLabels &lt;- mapVisualProperty(&#39;node label&#39;,&#39;id&#39;,&#39;p&#39;)
+nodeFills &lt;- mapVisualProperty(&#39;node fill color&#39;,&#39;group&#39;,&#39;d&#39;,c(&quot;A&quot;,&quot;B&quot;), c(&quot;#FF9900&quot;,&quot;#66AAAA&quot;))
+arrowShapes &lt;- mapVisualProperty(&#39;Edge Target Arrow Shape&#39;,&#39;interaction&#39;,&#39;d&#39;,c(&quot;activates&quot;,&quot;inhibits&quot;,&quot;interacts&quot;),c(&quot;Arrow&quot;,&quot;T&quot;,&quot;None&quot;))
+edgeWidth &lt;- mapVisualProperty(&#39;edge width&#39;,&#39;weight&#39;,&#39;p&#39;)
+
+createVisualStyle(style.name, defaults, list(nodeLabels,nodeFills,arrowShapes,edgeWidth))
+setVisualStyle(style.name)</code></pre>
+<pre><code>##                 message 
+## &quot;Visual Style applied.&quot;</code></pre>
+</div>
+<div id="bioconductor-graph-example" class="section level3">
+<h3>Bioconductor graph example</h3>
+<p>Here we create a 4-node graph in R, send it to Cytoscape for display and layout.</p>
+<pre class="r"><code>g = new (&#39;graphNEL&#39;, edgemode=&#39;directed&#39;)
+g = graph::addNode (&#39;A&#39;, g)
+g = graph::addNode (&#39;D&#39;, g)
+g = graph::addNode (&#39;C&#39;, g, edges = list(&#39;D&#39;))
+g = graph::addNode (&#39;B&#39;, g, edges = list(c(&#39;A&#39;,&#39;D&#39;,&#39;C&#39;)))
+createNetworkFromGraph (g, title=&#39;simple network&#39;, collection=&#39;GraphNEL Example&#39;)</code></pre>
+<pre><code>## Loading data...</code></pre>
+<pre><code>## Applying default style...</code></pre>
+<pre><code>## Applying preferred layout...</code></pre>
+<pre><code>## networkSUID 
+##         202</code></pre>
+</div>
+<div id="add-node-attributes" class="section level3">
+<h3>Add node attributes</h3>
+<p>We continue with the simple 4-node graph, adding two kinds data values (moleculeType’ andlog2fc’).</p>
+<pre class="r"><code>df &lt;- data.frame (moleculeType=c(&#39;kinase&#39;,&#39;TF&#39;,&#39;cytokine&#39;,&#39;cytokine&#39;),
+                 log2fc=c(1.8,3.0,-1.2,-2.5),
+                 row.names = c(&#39;A&#39;,&#39;B&#39;,&#39;C&#39;,&#39;D&#39;), # row.names = node names
+                 stringsAsFactors = FALSE)       # important when loading strings!
+loadTableData (df)</code></pre>
+<pre><code>## [1] &quot;Success: Data loaded in defaultnode table&quot;</code></pre>
+</div>
+<div id="modifying-the-display-defaults-and-mappings" class="section level3">
+<h3>Modifying the display: defaults and mappings</h3>
+<p>First, let’s change the the defaults.</p>
+<pre class="r"><code>    setNodeShapeDefault (&#39;OCTAGON&#39;)</code></pre>
+<pre><code>## style.name not specified, so updating &quot;default&quot; style.</code></pre>
+<pre class="r"><code>    setNodeColorDefault (&#39;#AAFF88&#39;)</code></pre>
+<pre><code>## style.name not specified, so updating &quot;default&quot; style.</code></pre>
+<pre class="r"><code>    setNodeSizeDefault  (60)</code></pre>
+<pre><code>## style.name not specified, so updating &quot;default&quot; style.
+## style.name not specified, so updating &quot;default&quot; style.</code></pre>
+<pre class="r"><code>    setNodeFontSizeDefault (30)</code></pre>
+<pre><code>## style.name not specified, so updating &quot;default&quot; style.</code></pre>
+<p>Now we will add some visual mappings. Let’s map `moleculeType’ to node shapes. First, we can see which shapes are available in Cytoscape, then we can define the mapping with paired lists.</p>
+<pre class="r"><code>    getNodeShapes ()   # diamond, ellipse, trapezoid, triangle, etc.</code></pre>
+<pre><code>## [1] &quot;ELLIPSE&quot;         &quot;RECTANGLE&quot;       &quot;HEXAGON&quot;         &quot;DIAMOND&quot;        
+## [5] &quot;ROUND_RECTANGLE&quot; &quot;OCTAGON&quot;         &quot;TRIANGLE&quot;        &quot;PARALLELOGRAM&quot;  
+## [9] &quot;VEE&quot;</code></pre>
+<pre class="r"><code>    column &lt;- &#39;moleculeType&#39;
+    values &lt;- c (&#39;kinase&#39;,  &#39;TF&#39;,&#39;cytokine&#39;)
+    shapes &lt;- c (&#39;DIAMOND&#39;, &#39;TRIANGLE&#39;, &#39;RECTANGLE&#39;)
+    setNodeShapeMapping (column, values, shapes)</code></pre>
+<pre><code>## style.name not specified, so updating &quot;default&quot; style.</code></pre>
+<pre><code>## NULL</code></pre>
+<p>In the case of expression values, for example, we will want to use continuous mapping (e.g., to node color), defining a small set of control points, rather than an explicit color for each possible data value. Let’s try that one now</p>
+<pre class="r"><code>    column &lt;- &#39;log2fc&#39;
+    control.points &lt;- c (-3.0, 0.0, 3.0)
+    colors &lt;-  c (&#39;#5588DD&#39;, &#39;#FFFFFF&#39;, &#39;#DD8855&#39;)
+    setNodeColorMapping (column, control.points, colors)</code></pre>
+<pre><code>## style.name not specified, so updating &quot;default&quot; style.</code></pre>
+<pre><code>## NULL</code></pre>
+<p>Note that there are three colors and three control points. However, you can also specify two additional colors beyond the number of control points if you want to set extreme (or out-of-bounds) colors for values less than or greater than your control points.</p>
+<pre class="r"><code>    control.points &lt;- c (-2.0, 0.0, 2.0)
+    colors &lt;-  c (&#39;#2255CC&#39;, &#39;#5588DD&#39;, &#39;#FFFFFF&#39;, &#39;#DD8855&#39;,&#39;#CC5522&#39;)
+    setNodeColorMapping (column, control.points, colors)</code></pre>
+<pre><code>## style.name not specified, so updating &quot;default&quot; style.</code></pre>
+<pre><code>## NULL</code></pre>
+<p>Now, add a node size rule, using log2fc again as controlling node values.</p>
+<pre class="r"><code>    control.points = c (-3.0, 2.0, 3.0)
+    sizes     = c (20, 80, 90)
+    setNodeSizeMapping (column, control.points, sizes)</code></pre>
+<pre><code>## style.name not specified, so updating &quot;default&quot; style.</code></pre>
+<pre><code>## NULL</code></pre>
+</div>
+<div id="selecting-nodes" class="section level3">
+<h3>Selecting nodes</h3>
+<p>Let us now try selecting nodes in Cytoscape from R. Select the C node by name:</p>
+<pre class="r"><code>selectNodes (&#39;C&#39;,&#39;name&#39;)</code></pre>
+<pre><code>## $nodes
+## [1] 214
+## 
+## $edges
+## list()</code></pre>
+<pre class="r"><code>getSelectedNodes ()</code></pre>
+<pre><code>## [1] &quot;C&quot;</code></pre>
+<p>Now we wish to extend the selected nodes to include the first neighbors of the already-selected node C.</p>
+<pre class="r"><code>selectFirstNeighbors ()</code></pre>
+<pre><code>## $nodes
+## [1] 213 214 215
+## 
+## $edges
+## list()</code></pre>
+<p>You will see that three nodes are now selected. Get their names back to R as a list:</p>
+<pre class="r"><code>node.names &lt;- getSelectedNodes ()
+node.names</code></pre>
+<pre><code>## [1] &quot;D&quot; &quot;C&quot; &quot;B&quot;</code></pre>
+<p>And, finally, deselection works as you’d expect by means of a general clearSelection function:</p>
+<pre class="r"><code>clearSelection()</code></pre>
+</div>
+<div id="saving-and-export" class="section level3">
+<h3>Saving and Export</h3>
+<div id="saving-the-session" class="section level4">
+<h4>Saving the session</h4>
+<pre class="r"><code>saveSession(&#39;vignette_session&#39;) #.cys</code></pre>
+<pre><code>## Warning: This file has been overwritten.</code></pre>
+</div>
+<div id="saving-high-resolution-image-files" class="section level4">
+<h4>Saving high resolution image files</h4>
+<pre class="r"><code>full.path=paste(getwd(),&#39;vignette_image&#39;,sep=&#39;/&#39;)
+    exportImage(full.path, &#39;PNG&#39;, zoom=200) #.png scaled by 200%</code></pre>
+<pre><code>## Warning: This file already exists. A Cytoscape popup 
+##                 will be generated to confirm overwrite.</code></pre>
+<pre><code>##                                                                                                                file 
+## &quot;C:\\Users\\Simin\\Dropbox (Personal)\\_UMASS\\BIO 697\\genomics-course\\genomics-course\\labs\\vignette_image.png&quot;</code></pre>
+</div>
+</div>
+<div id="rcy3-overview-image-1" class="section level3">
+<h3><a href="vignette_image.png">RCy3 Overview Image</a></h3>
+</div>
+</div>
 
 
 

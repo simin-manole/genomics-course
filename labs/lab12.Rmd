@@ -22,3 +22,172 @@ knitr::opts_chunk$set(echo = TRUE)
 #### [STRING Protein Query Down-regulated Genes Image](images/StringNetwork(2).png)
 
 #### [STRING Disease Query](images/StringNetwork(3).png)
+
+## Overview of RCy3
+
+#### [RCy3 Overview Image](vignette_image.png)
+
+### Installation
+```{r}
+if(!"RCy3" %in% installed.packages()){
+    install.packages("BiocManager")
+    BiocManager::install("RCy3")
+}
+library(RCy3)
+```
+
+### Getting started
+
+Confirm that you have everything installed and running:
+```{r}
+cytoscapePing ()
+cytoscapeVersionInfo ()
+```
+
+### My first network
+
+Let’s create a Cytoscape network from some basic R objects
+```{r}
+nodes <- data.frame(id=c("node 0","node 1","node 2","node 3"),
+           group=c("A","A","B","B"), # categorical strings
+           score=as.integer(c(20,10,15,5)), # integers
+           stringsAsFactors=FALSE)
+edges <- data.frame(source=c("node 0","node 0","node 0","node 2"),
+           target=c("node 1","node 2","node 3","node 3"),
+           interaction=c("inhibits","interacts","activates","interacts"),  # optional
+           weight=c(5.1,3.0,5.2,9.9), # numeric
+           stringsAsFactors=FALSE)
+
+createNetworkFromDataFrames(nodes,edges, title="my first network", collection="DataFrame Example")
+```
+
+### Switch styles
+
+Check out the marquee style!
+```{r}
+setVisualStyle('Marquee')
+```
+
+### My own style
+
+Create your own style with node attribute fill mappings and some defaults
+```{r}
+style.name = "myStyle"
+defaults <- list(NODE_SHAPE="diamond",
+                 NODE_SIZE=30,
+                 EDGE_TRANSPARENCY=120,
+                 NODE_LABEL_POSITION="W,E,c,0.00,0.00")
+nodeLabels <- mapVisualProperty('node label','id','p')
+nodeFills <- mapVisualProperty('node fill color','group','d',c("A","B"), c("#FF9900","#66AAAA"))
+arrowShapes <- mapVisualProperty('Edge Target Arrow Shape','interaction','d',c("activates","inhibits","interacts"),c("Arrow","T","None"))
+edgeWidth <- mapVisualProperty('edge width','weight','p')
+
+createVisualStyle(style.name, defaults, list(nodeLabels,nodeFills,arrowShapes,edgeWidth))
+setVisualStyle(style.name)
+```
+
+### Bioconductor graph example
+
+Here we create a 4-node graph in R, send it to Cytoscape for display and layout.
+```{r}
+g = new ('graphNEL', edgemode='directed')
+g = graph::addNode ('A', g)
+g = graph::addNode ('D', g)
+g = graph::addNode ('C', g, edges = list('D'))
+g = graph::addNode ('B', g, edges = list(c('A','D','C')))
+createNetworkFromGraph (g, title='simple network', collection='GraphNEL Example')
+```
+
+### Add node attributes
+
+We continue with the simple 4-node graph, adding two kinds data values (moleculeType' andlog2fc’).
+```{r}
+df <- data.frame (moleculeType=c('kinase','TF','cytokine','cytokine'),
+                 log2fc=c(1.8,3.0,-1.2,-2.5),
+                 row.names = c('A','B','C','D'), # row.names = node names
+                 stringsAsFactors = FALSE)       # important when loading strings!
+loadTableData (df)
+```
+
+### Modifying the display: defaults and mappings
+
+First, let’s change the the defaults.
+```{r}
+    setNodeShapeDefault ('OCTAGON')
+    setNodeColorDefault ('#AAFF88')
+    setNodeSizeDefault  (60)
+    setNodeFontSizeDefault (30)
+```
+    
+Now we will add some visual mappings. Let’s map `moleculeType’ to node shapes. First, we can see which shapes are available in Cytoscape, then we can define the mapping with paired lists.
+```{r}
+    getNodeShapes ()   # diamond, ellipse, trapezoid, triangle, etc.
+    column <- 'moleculeType'
+    values <- c ('kinase',  'TF','cytokine')
+    shapes <- c ('DIAMOND', 'TRIANGLE', 'RECTANGLE')
+    setNodeShapeMapping (column, values, shapes)
+```
+    
+In the case of expression values, for example, we will want to use continuous mapping (e.g., to node color), defining a small set of control points, rather than an explicit color for each possible data value. Let’s try that one now
+```{r}
+    column <- 'log2fc'
+    control.points <- c (-3.0, 0.0, 3.0)
+    colors <-  c ('#5588DD', '#FFFFFF', '#DD8855')
+    setNodeColorMapping (column, control.points, colors)
+```
+    
+Note that there are three colors and three control points. However, you can also specify two additional colors beyond the number of control points if you want to set extreme (or out-of-bounds) colors for values less than or greater than your control points.
+```{r}
+    control.points <- c (-2.0, 0.0, 2.0)
+    colors <-  c ('#2255CC', '#5588DD', '#FFFFFF', '#DD8855','#CC5522')
+    setNodeColorMapping (column, control.points, colors)
+```
+    
+Now, add a node size rule, using log2fc again as controlling node values.
+```{r}
+    control.points = c (-3.0, 2.0, 3.0)
+    sizes     = c (20, 80, 90)
+    setNodeSizeMapping (column, control.points, sizes)
+```
+
+### Selecting nodes
+
+Let us now try selecting nodes in Cytoscape from R. Select the C node by name:
+```{r}
+selectNodes ('C','name')
+```
+
+```{r}
+getSelectedNodes ()
+```
+
+Now we wish to extend the selected nodes to include the first neighbors of the already-selected node C.
+```{r}
+selectFirstNeighbors ()
+```
+
+You will see that three nodes are now selected. Get their names back to R as a list:
+```{r}
+node.names <- getSelectedNodes ()
+node.names
+```
+
+And, finally, deselection works as you’d expect by means of a general clearSelection function:
+```{r}
+clearSelection()
+```
+
+### Saving and Export
+
+#### Saving the session
+```{r}
+saveSession('vignette_session') #.cys
+```
+
+#### Saving high resolution image files
+```{r}
+full.path=paste(getwd(),'vignette_image',sep='/')
+    exportImage(full.path, 'PNG', zoom=200) #.png scaled by 200%
+```
+
+### [RCy3 Overview Image](vignette_image.png)
